@@ -5,6 +5,7 @@ import (
 
 	// https://pkg.go.dev/github.com/bits-and-blooms/bloom#section-readme
 	"github.com/bits-and-blooms/bloom/v3"
+	"github.com/mitchellh/hashstructure"
 )
 
 const (
@@ -30,9 +31,11 @@ func (set *Set) GetElements() []uint32 {
 	return set.List
 }
 
+// TODO: Handle Hash Error
 func (set *Set) AddElement(element uint32) {
 	if !set.AddElementToBF(element) {
 		set.List = append(set.List, element)
+		set.Hash, _ = hashstructure.Hash(set, nil)
 	}
 }
 

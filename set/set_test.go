@@ -1,6 +1,7 @@
 package set
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/bits-and-blooms/bloom/v3"
@@ -55,6 +56,7 @@ func TestGetElements(t *testing.T) {
 	expectedElements := []uint32{1, 2, 3}
 	actualElements := set.GetElements()
 
+	fmt.Println(set)
 	assert.Equal(t, expectedElements, actualElements)
 }
 
