@@ -11,6 +11,7 @@ func TestInitialize(t *testing.T) {
 	expectedSet := Set{
 		List: []uint32{},
 		BF:   bloom.NewWithEstimates(setSize, falsePositiveRate),
+		Hash: uint64(0),
 	}
 	actualSet := Initialize()
 	defer actualSet.Clear()
@@ -30,7 +31,6 @@ func TestAddElement(t *testing.T) {
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
 
-// TODO: Change To Skip Duplicates
 func TestAddElement_Duplicate(t *testing.T) {
 	elementToAdd := uint32(1)
 

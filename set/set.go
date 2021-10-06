@@ -13,15 +13,16 @@ const (
 )
 
 type Set struct {
-	List []uint32
-	BF   *bloom.BloomFilter
-	// Hash
+	List []uint32           `hash:"set"`
+	BF   *bloom.BloomFilter `hash:"ignore"`
+	Hash uint64             `hash:"ignore"`
 }
 
 func Initialize() Set {
 	return Set{
 		List: []uint32{},
 		BF:   bloom.NewWithEstimates(setSize, falsePositiveRate),
+		Hash: uint64(0),
 	}
 }
 
