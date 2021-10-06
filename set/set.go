@@ -12,12 +12,14 @@ const (
 	falsePositiveRate = 0.01
 )
 
+// Set ...
 type Set struct {
 	List []uint32           `hash:"set"`
 	BF   *bloom.BloomFilter `hash:"ignore"`
 	Hash uint64             `hash:"ignore"`
 }
 
+// Initialize ...
 func Initialize() Set {
 	return Set{
 		List: []uint32{},
@@ -26,10 +28,12 @@ func Initialize() Set {
 	}
 }
 
+// GetElements ...
 func (set *Set) GetElements() []uint32 {
 	return set.List
 }
 
+// AddElement ...
 // TODO: Handle Hash Error
 func (set *Set) AddElement(element uint32) {
 	if !set.AddElementToBF(element) {
@@ -38,20 +42,24 @@ func (set *Set) AddElement(element uint32) {
 	}
 }
 
+// AddElementToBF ...
 func (set *Set) AddElementToBF(element uint32) bool {
 	array := make([]byte, 4)
 	binary.BigEndian.PutUint32(array, element)
 	return set.BF.TestAndAdd(array)
 }
 
+// GetBF ...
 func (set *Set) GetBF() *bloom.BloomFilter {
 	return set.BF
 }
 
+// GetHash ...
 func (set *Set) GetHash() uint64 {
 	return set.Hash
 }
 
+// Clear ...
 func (set *Set) Clear() {
 	set.List = []uint32{}
 	set.BF.ClearAll()
