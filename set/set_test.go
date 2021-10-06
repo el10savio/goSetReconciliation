@@ -13,6 +13,8 @@ func TestInitialize(t *testing.T) {
 		BF:   bloom.NewWithEstimates(setSize, falsePositiveRate),
 	}
 	actualSet := Initialize()
+	defer actualSet.Clear()
+
 	assert.Equal(t, expectedSet, actualSet)
 }
 
@@ -20,26 +22,32 @@ func TestAddElement(t *testing.T) {
 	elementToAdd := uint32(1)
 
 	expectedSet := Set{List: []uint32{elementToAdd}}
-	actualset := Initialize()
-	actualset.AddElement(elementToAdd)
+	actualSet := Initialize()
+	defer actualSet.Clear()
 
-	assert.Equal(t, expectedSet.List, actualset.List)
+	actualSet.AddElement(elementToAdd)
+
+	assert.Equal(t, expectedSet.List, actualSet.List)
 }
 
 // TODO: Change To Skip Duplicates
 func TestAddElement_Duplicate(t *testing.T) {
 	elementToAdd := uint32(1)
 
-	expectedSet := Set{List: []uint32{elementToAdd, elementToAdd}}
-	actualset := Initialize()
-	actualset.AddElement(elementToAdd)
-	actualset.AddElement(elementToAdd)
+	expectedSet := Set{List: []uint32{elementToAdd}}
+	actualSet := Initialize()
+	defer actualSet.Clear()
 
-	assert.Equal(t, expectedSet.List, actualset.List)
+	actualSet.AddElement(elementToAdd)
+	actualSet.AddElement(elementToAdd)
+
+	assert.Equal(t, expectedSet.List, actualSet.List)
 }
 
 func TestGetElements(t *testing.T) {
 	set := Initialize()
+	defer set.Clear()
+
 	set.AddElement(1)
 	set.AddElement(2)
 	set.AddElement(3)
@@ -52,6 +60,7 @@ func TestGetElements(t *testing.T) {
 
 func TestGetElements_Empty(t *testing.T) {
 	set := Initialize()
+	defer set.Clear()
 
 	expectedElements := make([]uint32, 0)
 	actualElements := set.GetElements()

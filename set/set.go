@@ -29,12 +29,18 @@ func (set *Set) GetElements() []uint32 {
 }
 
 func (set *Set) AddElement(element uint32) {
-	set.List = append(set.List, element)
-	set.AddElementToBF(element)
+	if !set.AddElementToBF(element) {
+		set.List = append(set.List, element)
+	}
 }
 
-func (set *Set) AddElementToBF(element uint32) {
+func (set *Set) AddElementToBF(element uint32) bool {
 	array := make([]byte, 4)
 	binary.BigEndian.PutUint32(array, element)
-	set.BF.Add(array)
+	return set.BF.TestAndAdd(array)
+}
+
+func (set *Set) Clear() {
+	set.List = []uint32{}
+	set.BF.ClearAll()
 }
