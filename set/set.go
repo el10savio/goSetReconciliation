@@ -41,6 +41,10 @@ func (set *Set) AddElementToBF(element uint32) bool {
 	return set.BF.TestAndAdd(array)
 }
 
+func (set *Set) GetBF() *bloom.BloomFilter {
+	return set.BF
+}
+
 func (set *Set) Clear() {
 	set.List = []uint32{}
 	set.BF.ClearAll()
