@@ -15,3 +15,7 @@ func Initialize() Set {
 func (set *Set) GetElements() []int {
 	return set.List
 }
+
+func (set *Set) AddElement(element int) {
+	set.List = append(set.List, element)
+}
