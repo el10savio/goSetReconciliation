@@ -3,35 +3,39 @@ package set
 import (
 	"testing"
 
+	"github.com/bits-and-blooms/bloom/v3"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestInitialize(t *testing.T) {
-	expectedSet := Set{List: []int{}}
+	expectedSet := Set{
+		List: []uint32{},
+		BF:   bloom.NewWithEstimates(setSize, falsePositiveRate),
+	}
 	actualSet := Initialize()
 	assert.Equal(t, expectedSet, actualSet)
 }
 
 func TestAddElement(t *testing.T) {
-	elementToAdd := 1
+	elementToAdd := uint32(1)
 
-	expectedSet := Set{List: []int{elementToAdd}}
+	expectedSet := Set{List: []uint32{elementToAdd}}
 	actualset := Initialize()
 	actualset.AddElement(elementToAdd)
 
-	assert.Equal(t, expectedSet, actualset)
+	assert.Equal(t, expectedSet.List, actualset.List)
 }
 
 // TODO: Change To Skip Duplicates
 func TestAddElement_Duplicate(t *testing.T) {
-	elementToAdd := 1
+	elementToAdd := uint32(1)
 
-	expectedSet := Set{List: []int{elementToAdd, elementToAdd}}
+	expectedSet := Set{List: []uint32{elementToAdd, elementToAdd}}
 	actualset := Initialize()
 	actualset.AddElement(elementToAdd)
 	actualset.AddElement(elementToAdd)
 
-	assert.Equal(t, expectedSet, actualset)
+	assert.Equal(t, expectedSet.List, actualset.List)
 }
 
 func TestGetElements(t *testing.T) {
@@ -40,7 +44,7 @@ func TestGetElements(t *testing.T) {
 	set.AddElement(2)
 	set.AddElement(3)
 
-	expectedElements := []int{1, 2, 3}
+	expectedElements := []uint32{1, 2, 3}
 	actualElements := set.GetElements()
 
 	assert.Equal(t, expectedElements, actualElements)
@@ -49,7 +53,7 @@ func TestGetElements(t *testing.T) {
 func TestGetElements_Empty(t *testing.T) {
 	set := Initialize()
 
-	expectedElements := make([]int, 0)
+	expectedElements := make([]uint32, 0)
 	actualElements := set.GetElements()
 
 	assert.Equal(t, expectedElements, actualElements)
