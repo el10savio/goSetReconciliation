@@ -49,6 +49,10 @@ func (set *Set) GetBF() *bloom.BloomFilter {
 	return set.BF
 }
 
+func (set *Set) GetHash() uint64 {
+	return set.Hash
+}
+
 func (set *Set) Clear() {
 	set.List = []uint32{}
 	set.BF.ClearAll()
