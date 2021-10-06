@@ -11,3 +11,7 @@ func Initialize() Set {
 		List: []int{},
 	}
 }
+
+func (set *Set) GetElements() []int {
+	return set.List
+}
