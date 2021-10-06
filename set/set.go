@@ -3,6 +3,7 @@ package set
 import (
 	"encoding/binary"
 
+	// https://pkg.go.dev/github.com/bits-and-blooms/bloom#section-readme
 	"github.com/bits-and-blooms/bloom/v3"
 )
 
