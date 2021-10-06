@@ -3,7 +3,6 @@ package set
 import (
 	"encoding/binary"
 
-	// https://pkg.go.dev/github.com/bits-and-blooms/bloom#section-readme
 	"github.com/bits-and-blooms/bloom/v3"
 	"github.com/mitchellh/hashstructure"
 )
@@ -56,4 +55,5 @@ func (set *Set) GetHash() uint64 {
 func (set *Set) Clear() {
 	set.List = []uint32{}
 	set.BF.ClearAll()
+	set.Hash = uint64(0)
 }

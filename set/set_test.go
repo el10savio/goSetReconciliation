@@ -19,6 +19,18 @@ func TestInitialize(t *testing.T) {
 	assert.Equal(t, expectedSet, actualSet)
 }
 
+func TestClear(t *testing.T) {
+	expectedSet := Set{
+		List: []uint32{},
+		BF:   bloom.NewWithEstimates(setSize, falsePositiveRate),
+		Hash: uint64(0),
+	}
+	actualSet := Initialize()
+	actualSet.Clear()
+
+	assert.Equal(t, expectedSet, actualSet)
+}
+
 func TestAddElement(t *testing.T) {
 	elementToAdd := uint32(1)
 
