@@ -31,7 +31,7 @@ type Route struct {
 // of individual Routes
 var Routes = []Route{
 	{"/", "GET", Index},
-	// {"/set/list", "GET", List},
+	{"/set/list", "GET", List},
 	// {"/set/add", "POST", Add},
 }
 
