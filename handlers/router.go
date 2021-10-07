@@ -12,7 +12,7 @@ import (
 
 var (
 	// Set
-	Set set.Index
+	Set set.Set
 )
 
 func init() {
@@ -35,7 +35,7 @@ var Routes = []Route{
 	// {"/set/add", "POST", Add},
 }
 
-// Index is the handler for the path "/set"
+// Index is the handler for the path "/"
 func Index(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello World Set Node\n")
 }
