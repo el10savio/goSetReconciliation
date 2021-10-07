@@ -32,7 +32,7 @@ type Route struct {
 var Routes = []Route{
 	{"/", "GET", Index},
 	{"/set/list", "GET", List},
-	// {"/set/add", "POST", Add},
+	{"/set/add", "POST", Add},
 }
 
 // Index is the handler for the path "/"
