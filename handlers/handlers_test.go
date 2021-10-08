@@ -10,8 +10,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// TODO: Add defer cleanup
-
 func TestIndex(t *testing.T) {
 	request, err := http.NewRequest("GET", "/", nil)
 	if err != nil {
@@ -63,6 +61,31 @@ func TestGet_DuplicateElement(t *testing.T) {
 	defer testClearUtil(t)
 	testAddUtil(t, "1", http.StatusOK)
 	testAddUtil(t, "1", http.StatusOK)
+	testGetUtil(t, "[1]\n", http.StatusOK)
+}
+
+func TestGetHash(t *testing.T) {
+	defer testClearUtil(t)
+	testAddUtil(t, "1", http.StatusOK)
+	testGetHashUtil(t, "9859332470759935394\n", http.StatusOK)
+}
+
+func TestGetHash_NonNumberElement(t *testing.T) {
+	defer testClearUtil(t)
+	testAddUtil(t, "+", http.StatusInternalServerError)
+	testGetHashUtil(t, "0\n", http.StatusOK)
+}
+
+func TestGetHash_EmptyElement(t *testing.T) {
+	defer testClearUtil(t)
+	testGetHashUtil(t, "0\n", http.StatusOK)
+}
+
+func TestGetHash_DuplicateElement(t *testing.T) {
+	defer testClearUtil(t)
+	testAddUtil(t, "1", http.StatusOK)
+	testAddUtil(t, "1", http.StatusOK)
+	testGetHashUtil(t, "9859332470759935394\n", http.StatusOK)
 }
 
 func testAddUtil(t *testing.T, element string, expectedStatus int) {
@@ -92,6 +115,20 @@ func testGetUtil(t *testing.T, expectedList string, expectedStatus int) {
 
 	assert.Equal(t, expectedStatus, rr.Code)
 	assert.Equal(t, expectedList, rr.Body.String())
+}
+
+func testGetHashUtil(t *testing.T, expectedHash string, expectedStatus int) {
+	request, err := http.NewRequest("GET", "/set/debug/hash", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	handler := http.HandlerFunc(GetHash)
+	handler.ServeHTTP(rr, request)
+
+	assert.Equal(t, expectedStatus, rr.Code)
+	assert.Equal(t, expectedHash, rr.Body.String())
 }
 
 func testClearUtil(t *testing.T) {
