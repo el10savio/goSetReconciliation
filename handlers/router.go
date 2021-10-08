@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	// Set
+	// Set ...
 	Set set.Set
 )
 
