@@ -29,39 +29,24 @@ func TestAdd(t *testing.T) {
 	testAddUtil(t, "1", http.StatusOK)
 }
 
-func TestAdd_NonNumberElement(t *testing.T) {
-	defer testClearUtil(t)
-	testAddUtil(t, "+", http.StatusInternalServerError)
-}
-
-func TestAdd_DuplicateElement(t *testing.T) {
-	defer testClearUtil(t)
-	testAddUtil(t, "1", http.StatusOK)
-	testAddUtil(t, "1", http.StatusOK)
-}
-
-func TestAdd_MultipleElements(t *testing.T) {
-	defer testClearUtil(t)
-	testAddUtil(t, "1", http.StatusOK)
-	testAddUtil(t, "2", http.StatusOK)
-	testAddUtil(t, "3", http.StatusOK)
-}
-
 func TestGet(t *testing.T) {
 	defer testClearUtil(t)
 	testAddUtil(t, "1", http.StatusOK)
 	testGetUtil(t, "[1]\n", http.StatusOK)
+	testGetHashUtil(t, "9859332470759935394\n", http.StatusOK)
 }
 
 func TestGet_NonNumberElement(t *testing.T) {
 	defer testClearUtil(t)
 	testAddUtil(t, "+", http.StatusInternalServerError)
 	testGetUtil(t, "[]\n", http.StatusOK)
+	testGetHashUtil(t, "0\n", http.StatusOK)
 }
 
 func TestGet_EmptyElement(t *testing.T) {
 	defer testClearUtil(t)
 	testGetUtil(t, "[]\n", http.StatusOK)
+	testGetHashUtil(t, "0\n", http.StatusOK)
 }
 
 func TestGet_DuplicateElement(t *testing.T) {
@@ -69,6 +54,7 @@ func TestGet_DuplicateElement(t *testing.T) {
 	testAddUtil(t, "1", http.StatusOK)
 	testAddUtil(t, "1", http.StatusOK)
 	testGetUtil(t, "[1]\n", http.StatusOK)
+	testGetHashUtil(t, "9859332470759935394\n", http.StatusOK)
 }
 
 func TestGet_MultipleElements(t *testing.T) {
@@ -77,37 +63,6 @@ func TestGet_MultipleElements(t *testing.T) {
 	testAddUtil(t, "2", http.StatusOK)
 	testAddUtil(t, "3", http.StatusOK)
 	testGetUtil(t, "[1,2,3]\n", http.StatusOK)
-}
-
-func TestGetHash(t *testing.T) {
-	defer testClearUtil(t)
-	testAddUtil(t, "1", http.StatusOK)
-	testGetHashUtil(t, "9859332470759935394\n", http.StatusOK)
-}
-
-func TestGetHash_NonNumberElement(t *testing.T) {
-	defer testClearUtil(t)
-	testAddUtil(t, "+", http.StatusInternalServerError)
-	testGetHashUtil(t, "0\n", http.StatusOK)
-}
-
-func TestGetHash_EmptyElement(t *testing.T) {
-	defer testClearUtil(t)
-	testGetHashUtil(t, "0\n", http.StatusOK)
-}
-
-func TestGetHash_DuplicateElement(t *testing.T) {
-	defer testClearUtil(t)
-	testAddUtil(t, "1", http.StatusOK)
-	testAddUtil(t, "1", http.StatusOK)
-	testGetHashUtil(t, "9859332470759935394\n", http.StatusOK)
-}
-
-func TestGetHash_MultipleElements(t *testing.T) {
-	defer testClearUtil(t)
-	testAddUtil(t, "1", http.StatusOK)
-	testAddUtil(t, "2", http.StatusOK)
-	testAddUtil(t, "3", http.StatusOK)
 	testGetHashUtil(t, "4501587851448633642\n", http.StatusOK)
 }
 
