@@ -33,6 +33,7 @@ var Routes = []Route{
 	{"/", "GET", Index},
 	{"/set/list", "GET", List},
 	{"/set/add", "POST", Add},
+	{"/set/debug/clear", "GET", Clear},
 }
 
 // Index is the handler for the path "/"
