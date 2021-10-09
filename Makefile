@@ -1,11 +1,11 @@
 
 SetReconciliation-build:
 	@echo "Building SetReconciliation Docker Image"	
-	docker build -t setreconciliation -f Dockerfile .
+	docker build -t set -f Dockerfile .
 
 SetReconciliation-run:
 	@echo "Running Single SetReconciliation Docker Container"
-	docker run -p 8080:8080 -d setreconciliation
+	docker run -p 8080:8080 -d set
 
 build:
 	@echo "Building SetReconciliation Server"	
@@ -24,5 +24,9 @@ lint:
 	golint ./...
 
 test:
-	@echo "Testing SetReconciliation"	
+	@echo "Testing SetReconciliation Server"	
 	go test -v --cover ./...
+
+shellcheck:
+	@echo "shellcheck SetReconciliation Scripts"
+	shellcheck scripts/*.sh
