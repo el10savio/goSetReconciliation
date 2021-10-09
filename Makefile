@@ -12,7 +12,7 @@ provision:
 	bash scripts/provision.sh
 
 e2e:
-	@echo "Running E2E Testing On SetReconciliation Cluster"	
+	@echo "Running E2E Testing On Set Cluster"	
 	bash scripts/tests.sh
 
 info:
