@@ -6,7 +6,7 @@ import (
 	"github.com/el10savio/goSetReconciliation/set"
 )
 
-func GetBFMissingElements(list []uint32, BF bloom.BloomFilter) []uint32 {
+func GetBFMissingElements(list []uint32, BF *bloom.BloomFilter) []uint32 {
 	if list == nil {
 		return []uint32{}
 	}

@@ -60,7 +60,7 @@ func (set *Set) AddElementToBF(element uint32) bool {
 }
 
 // IsElementInBF ...
-func IsElementInBF(element uint32, BF bloom.BloomFilter) bool {
+func IsElementInBF(element uint32, BF *bloom.BloomFilter) bool {
 	array := make([]byte, 4)
 	binary.BigEndian.PutUint32(array, element)
 	return BF.Test(array)

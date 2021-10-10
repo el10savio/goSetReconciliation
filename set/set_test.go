@@ -1,6 +1,7 @@
 package set
 
 import (
+	"encoding/binary"
 	"testing"
 
 	"github.com/bits-and-blooms/bloom/v3"
@@ -78,4 +79,45 @@ func TestGetElements_Empty(t *testing.T) {
 	actualElements := set.GetElements()
 
 	assert.Equal(t, expectedElements, actualElements)
+}
+
+func TestIsElementInBF(t *testing.T) {
+	element := uint32(1)
+	BF := bloom.NewWithEstimates(setSize, falsePositiveRate)
+	BF = addElementToBF(element, BF)
+	defer BF.ClearAll()
+
+	expectedCondition := true
+	actualCondition := IsElementInBF(element, BF)
+
+	assert.Equal(t, expectedCondition, actualCondition)
+}
+
+func TestIsElementInBF_NotPresent(t *testing.T) {
+	element := uint32(2)
+	BF := bloom.NewWithEstimates(setSize, falsePositiveRate)
+	BF = addElementToBF(uint32(3), BF)
+	defer BF.ClearAll()
+
+	expectedCondition := false
+	actualCondition := IsElementInBF(element, BF)
+
+	assert.Equal(t, expectedCondition, actualCondition)
+}
+
+func TestIsElementInBF_EmptyBF(t *testing.T) {
+	element := uint32(1)
+	BF := bloom.NewWithEstimates(setSize, falsePositiveRate)
+	defer BF.ClearAll()
+
+	expectedCondition := false
+	actualCondition := IsElementInBF(element, BF)
+
+	assert.Equal(t, expectedCondition, actualCondition)
+}
+
+func addElementToBF(element uint32, BF *bloom.BloomFilter) *bloom.BloomFilter {
+	array := make([]byte, 4)
+	binary.BigEndian.PutUint32(array, element)
+	return BF.Add(array)
 }
