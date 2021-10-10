@@ -116,6 +116,71 @@ func TestIsElementInBF_EmptyBF(t *testing.T) {
 	assert.Equal(t, expectedCondition, actualCondition)
 }
 
+func TestMergeElements(t *testing.T) {
+	elements, elementsToMerge := []uint32{1, 2}, []uint32{3, 4, 5}
+	elementsMerged := []uint32{1, 2, 3, 4, 5}
+
+	expectedSet := Set{List: elementsMerged}
+	actualSet := Initialize()
+	defer actualSet.Clear()
+
+	for _, element := range elements {
+		actualSet.AddElement(element)
+	}
+	actualSet.MergeElements(elementsToMerge)
+
+	assert.Equal(t, expectedSet.List, actualSet.List)
+}
+
+func TestMergeElements_Empty(t *testing.T) {
+	elements, elementsToMerge := []uint32{1, 2}, []uint32{}
+	elementsMerged := []uint32{1, 2}
+
+	expectedSet := Set{List: elementsMerged}
+	actualSet := Initialize()
+	defer actualSet.Clear()
+
+	for _, element := range elements {
+		actualSet.AddElement(element)
+	}
+	actualSet.MergeElements(elementsToMerge)
+
+	assert.Equal(t, expectedSet.List, actualSet.List)
+}
+
+func TestMergeElements_BothEmpty(t *testing.T) {
+	elements, elementsToMerge := []uint32{}, []uint32{}
+	elementsMerged := []uint32{}
+
+	expectedSet := Set{List: elementsMerged}
+	actualSet := Initialize()
+	defer actualSet.Clear()
+
+	for _, element := range elements {
+		actualSet.AddElement(element)
+	}
+	actualSet.MergeElements(elementsToMerge)
+
+	assert.Equal(t, expectedSet.List, actualSet.List)
+}
+
+func TestMergeElements_Duplicate(t *testing.T) {
+	elements := []uint32{1, 2}
+	elementsToMerge := []uint32{1}
+	elementsMerged := []uint32{1, 2}
+
+	expectedSet := Set{List: elementsMerged}
+	actualSet := Initialize()
+	defer actualSet.Clear()
+
+	for _, element := range elements {
+		actualSet.AddElement(element)
+	}
+	actualSet.MergeElements(elementsToMerge)
+
+	assert.Equal(t, expectedSet.List, actualSet.List)
+}
+
 func addElementToBF(element uint32, BF *bloom.BloomFilter) *bloom.BloomFilter {
 	array := make([]byte, 4)
 	binary.BigEndian.PutUint32(array, element)
