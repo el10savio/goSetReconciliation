@@ -6,4 +6,4 @@ scripts_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 bash ${scripts_dir}/provision.sh 2
 
 echo "Cluster Sanity Tests"
-bats ${scripts_dir}/bats/cluster-sanity.bats
+bats --tap ${scripts_dir}/bats/cluster-sanity.bats
