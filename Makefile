@@ -15,15 +15,14 @@ e2e:
 	@echo "Running E2E Testing On Set Cluster"	
 	bash scripts/tests.sh
 
+clean:
+	@echo "Cleaning Set Cluster"
+	bash scripts/teardown.sh
+
 info:
 	echo "Set Cluster Nodes"
 	docker ps | grep 'set'
 	docker network ls | grep set_network
-
-clean:
-	@echo "Cleaning Set Cluster"
-	docker ps -a | awk '$$2 ~ /set/ {print $$1}' | xargs -I {} docker rm -f {}
-	docker network rm set_network
 
 build:
 	@echo "Building SetReconciliation Server"	
