@@ -34,11 +34,21 @@ func (set *Set) GetElements() []uint32 {
 }
 
 // AddElement ...
-// TODO: Handle Hash Error
 func (set *Set) AddElement(element uint32) {
 	if !set.AddElementToBF(element) {
 		set.List = append(set.List, element)
 		set.Hash, _ = hashstructure.Hash(set, nil)
+	}
+}
+
+// MergeElements ...
+func (set *Set) MergeElements(elements []uint32) {
+	if elements == nil {
+		return
+	}
+
+	for _, element := range elements {
+		set.AddElement(element)
 	}
 }
 
@@ -47,6 +57,13 @@ func (set *Set) AddElementToBF(element uint32) bool {
 	array := make([]byte, 4)
 	binary.BigEndian.PutUint32(array, element)
 	return set.BF.TestAndAdd(array)
+}
+
+// IsElementInBF ...
+func IsElementInBF(element uint32, BF bloom.BloomFilter) bool {
+	array := make([]byte, 4)
+	binary.BigEndian.PutUint32(array, element)
+	return BF.Test(array)
 }
 
 // GetBF ...
