@@ -40,6 +40,10 @@ lint:
 	@echo "go lint SetReconciliation Server"	
 	golint ./...
 
+lint-dockerfile:
+	@echo "lint SetReconciliation Dockerfile"	
+	docker run --rm -i hadolint/hadolint < Dockerfile
+
 test:
 	@echo "Testing SetReconciliation Server"	
 	go test -v --cover ./...
