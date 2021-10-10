@@ -8,9 +8,14 @@ WORKDIR /set
 
 COPY . .
 
-RUN go mod download
+RUN go get -d -v
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -v -a -installsuffix cgo -o /go/bin/set
+
+
+FROM scratch
+
+COPY --from=builder /go/bin/set /go/bin/set
 
 ENTRYPOINT ["/go/bin/set"]
 
