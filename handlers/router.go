@@ -38,7 +38,7 @@ var Routes = []Route{
 	{"/set/debug/hash", "GET", GetHash},
 	{"/set/debug/bloom", "GET", GetBloomFilter},
 
-	{"/set/sync/", "GET", StartSync},
+	{"/set/sync", "GET", StartSync},
 	{"/set/sync/reconcile", "POST", Reconcile},
 }
 
