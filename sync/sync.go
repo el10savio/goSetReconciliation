@@ -20,19 +20,31 @@ func Send(Set set.Set, missingElements []uint32) error {
 	}
 
 	fmt.Println(payload)
+	fmt.Println(GetPeerList())
+
+	for _, peer := range GetPeerList() {
+		_, err := SendSyncRequest(peer, payload)
+		if err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
 // Update ...
-func Update(Set set.Set, payload Payload) error {
+func Update(Set set.Set, payload Payload) set.Set {
 	if Set.GetHash() == payload.Hash {
-		return nil
+		return Set
 	}
 
+	Set = *Set.MergeElements(payload.MissingElements)
 	missingElements := GetBFMissingElements(Set.GetElements(), payload.BF)
-	Set.MergeElements(missingElements)
 
-	return nil
+	fmt.Println(Set, payload.BF, payload.Hash, missingElements)
+	_ = Send(Set, missingElements)
+
+	return Set
 }
 
 // SendSyncRequest sends the HTTP Sync POST request to a given peer
@@ -41,7 +53,7 @@ func SendSyncRequest(peer string, payload Payload) (int, error) {
 		return 0, errors.New("empty peer provided")
 	}
 
-	url := fmt.Sprintf("http://%s.%s/sync/reconcile", peer, GetNetwork())
+	url := fmt.Sprintf("http://%s.%s/set/sync/reconcile", peer, GetNetwork())
 	JSONPayload, err := json.Marshal(payload)
 	if err != nil {
 		return 0, err
@@ -52,10 +64,6 @@ func SendSyncRequest(peer string, payload Payload) (int, error) {
 
 // GetBFMissingElements ...
 func GetBFMissingElements(list []uint32, BF *bloom.BloomFilter) []uint32 {
-	if list == nil {
-		return []uint32{}
-	}
-
 	missing := make([]uint32, 0)
 
 	for _, element := range list {

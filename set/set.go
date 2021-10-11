@@ -42,14 +42,16 @@ func (set *Set) AddElement(element uint32) {
 }
 
 // MergeElements ...
-func (set *Set) MergeElements(elements []uint32) {
+func (set *Set) MergeElements(elements []uint32) *Set {
 	if elements == nil {
-		return
+		return set
 	}
 
 	for _, element := range elements {
 		set.AddElement(element)
 	}
+
+	return set
 }
 
 // AddElementToBF ...

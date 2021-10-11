@@ -24,12 +24,7 @@ func Reconcile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Reconcile the given value to our stored Set
-	err = sync.Update(Set, payload)
-	if err != nil {
-		log.WithFields(log.Fields{"error": err}).Error("failed to sync")
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+	Set = sync.Update(Set, payload)
 
 	// DEBUG log in the case of success indicating
 	// the new Set and the value added
