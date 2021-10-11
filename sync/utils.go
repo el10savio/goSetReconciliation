@@ -7,8 +7,6 @@ import (
 	"os"
 	"strings"
 	"time"
-
-	"github.com/el10savio/goSetReconciliation/sync"
 )
 
 // GetPeerList Obtains Peer List
@@ -24,7 +22,7 @@ func GetNetwork() string {
 }
 
 // SendRequest handles sending of an HTTP POST Request
-func SendRequest(url string, payload sync.Payload) (int, error) {
+func SendRequest(url string, payload Payload) (int, error) {
 	if url == "" {
 		return 0, errors.New("empty url provided")
 	}

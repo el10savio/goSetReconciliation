@@ -8,7 +8,6 @@ import (
 	"github.com/bits-and-blooms/bloom/v3"
 
 	"github.com/el10savio/goSetReconciliation/set"
-	"github.com/el10savio/goSetReconciliation/sync"
 )
 
 func Send(Set set.Set) error {
@@ -24,7 +23,7 @@ func Send(Set set.Set) error {
 }
 
 // SendSyncRequest sends the HTTP Sync POST request to a given peer
-func SendSyncRequest(peer string, payload sync.Payload) (int, error) {
+func SendSyncRequest(peer string, payload Payload) (int, error) {
 	if peer == "" {
 		return 0, errors.New("empty peer provided")
 	}

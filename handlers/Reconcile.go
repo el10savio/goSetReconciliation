@@ -8,7 +8,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-
 // Reconcile ...
 func Reconcile(w http.ResponseWriter, r *http.Request) {
 	var err error
@@ -34,7 +33,7 @@ func Reconcile(w http.ResponseWriter, r *http.Request) {
 	// DEBUG log in the case of success indicating
 	// the new Set and the value added
 	log.WithFields(log.Fields{
-		"set":  Set,
+		"set":   Set,
 		"value": payload.Value,
 	}).Debug("successful set sync")
 
