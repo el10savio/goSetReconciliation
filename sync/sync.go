@@ -10,6 +10,7 @@ import (
 	"github.com/el10savio/goSetReconciliation/set"
 )
 
+// Send ...
 func Send(Set set.Set) error {
 	// Send BF & Hash
 	payload := Payload{
@@ -37,6 +38,7 @@ func SendSyncRequest(peer string, payload Payload) (int, error) {
 	return SendRequest(url, JSONPayload)
 }
 
+// GetBFMissingElements ...
 func GetBFMissingElements(list []uint32, BF *bloom.BloomFilter) []uint32 {
 	if list == nil {
 		return []uint32{}
