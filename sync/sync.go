@@ -29,9 +29,12 @@ func SendSyncRequest(peer string, payload Payload) (int, error) {
 	}
 
 	url := fmt.Sprintf("http://%s.%s/sync/reconcile", peer, GetNetwork())
-	json.Marshal(payload)
+	JSONPayload, err := json.Marshal(payload)
+	if err != nil {
+		return 0, err
+	}
 
-	return SendRequest(url, payload)
+	return SendRequest(url, JSONPayload)
 }
 
 func GetBFMissingElements(list []uint32, BF *bloom.BloomFilter) []uint32 {

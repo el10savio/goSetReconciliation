@@ -22,7 +22,7 @@ func GetNetwork() string {
 }
 
 // SendRequest handles sending of an HTTP POST Request
-func SendRequest(url string, payload Payload) (int, error) {
+func SendRequest(url string, payload []byte) (int, error) {
 	if url == "" {
 		return 0, errors.New("empty url provided")
 	}

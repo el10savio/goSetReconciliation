@@ -11,7 +11,7 @@ import (
 // StartSync ...
 func StartSync(w http.ResponseWriter, r *http.Request) {
 	// Get the values from the Set
-	err := sync.Send()
+	err := sync.Send(Set)
 	if err != nil {
 		log.WithFields(log.Fields{"error": err}).Error("failed to send sync start")
 		w.WriteHeader(http.StatusInternalServerError)
@@ -23,6 +23,9 @@ func StartSync(w http.ResponseWriter, r *http.Request) {
 	log.WithFields(log.Fields{
 		"set": Set,
 	}).Debug("successful set sync")
+
+	// Return HTTP 200 OK in the case of success
+	w.WriteHeader(http.StatusOK)
 
 	// JSON encode response value
 	// json.NewEncoder(w).Encode(list)
