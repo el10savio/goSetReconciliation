@@ -13,3 +13,5 @@ require (
 replace github.com/el10savio/goSetReconciliation/set => ../set
 
 replace github.com/el10savio/goSetReconciliation/handlers => ../handlers
+
+replace github.com/el10savio/goSetReconciliation/sync => ../sync
