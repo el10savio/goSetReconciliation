@@ -15,9 +15,9 @@ network="set_network"
 peers_count=$1
 
 # Err check number of peers
-# If no peers count is given defaul to 3
+# If no peers count is given default to 2
 if [[ $peers_count -eq "" ]]; then
-    peers_count=3
+    peers_count=2
 fi
 
 echo "Number of peers: $peers_count"

@@ -9,7 +9,7 @@ SetReconciliation-run:
 
 provision:
 	@echo "Provisioning Set Cluster"	
-	bash scripts/provision.sh
+	bash scripts/provision.sh 2
 
 e2e:
 	@echo "Running E2E Testing On Set Cluster"	
