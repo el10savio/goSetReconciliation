@@ -11,15 +11,27 @@ import (
 )
 
 // Send ...
-func Send(Set set.Set) error {
+func Send(Set set.Set, missingElements []uint32) error {
 	// Send BF & Hash
 	payload := Payload{
-		MissingElements: []uint16{},
+		MissingElements: missingElements,
 		BF:              Set.GetBF(),
 		Hash:            Set.GetHash(),
 	}
 
 	fmt.Println(payload)
+	return nil
+}
+
+// Update ...
+func Update(Set set.Set, payload Payload) error {
+	if Set.GetHash() == payload.Hash {
+		return nil
+	}
+
+	missingElements := GetBFMissingElements(Set.GetElements(), payload.BF)
+	Set.MergeElements(missingElements)
+
 	return nil
 }
 

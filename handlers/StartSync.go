@@ -11,7 +11,7 @@ import (
 // StartSync ...
 func StartSync(w http.ResponseWriter, r *http.Request) {
 	// Get the values from the Set
-	err := sync.Send(Set)
+	err := sync.Send(Set, []uint32{})
 	if err != nil {
 		log.WithFields(log.Fields{"error": err}).Error("failed to send sync start")
 		w.WriteHeader(http.StatusInternalServerError)
