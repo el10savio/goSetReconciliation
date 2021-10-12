@@ -1,25 +1,22 @@
 package sync
 
 import (
-	"fmt"
-
 	"github.com/bits-and-blooms/bloom/v3"
 	"github.com/el10savio/goSetReconciliation/set"
 )
 
 // Update ...
-func Update(Set set.Set, payload Payload) set.Set {
+func Update(Set set.Set, payload Payload) (set.Set, []uint32) {
 	if Set.GetHash() == payload.Hash {
-		return Set
+		return Set, []uint32{}
 	}
 
 	Set = *Set.MergeElements(payload.MissingElements)
 	missingElements := GetBFMissingElements(Set.GetElements(), payload.BF)
 
-	fmt.Println(missingElements)
 	// _ = Send(Set, missingElements)
 
-	return Set
+	return Set, missingElements
 }
 
 // GetBFMissingElements ...

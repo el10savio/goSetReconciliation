@@ -23,13 +23,16 @@ func Reconcile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	missingElements := []uint32{}
+
 	// Reconcile the given value to our stored Set
-	Set = sync.Update(Set, payload)
+	Set, missingElements = sync.Update(Set, payload)
 
 	// DEBUG log in the case of success indicating
 	// the new Set and the value added
 	log.WithFields(log.Fields{
-		"set": Set,
+		"set":              Set,
+		"missing elements": missingElements,
 	}).Debug("successful set sync")
 
 	// Return HTTP 200 OK in the case of success
