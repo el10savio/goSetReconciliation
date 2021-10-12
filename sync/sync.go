@@ -18,6 +18,9 @@ func Send(Set set.Set, missingElements []uint32) error {
 	}
 
 	for _, peer := range GetPeerList() {
+		if peer == GetHost() {
+			continue
+		}
 		_, err := SendSyncRequest(peer, payload)
 		if err != nil {
 			return err

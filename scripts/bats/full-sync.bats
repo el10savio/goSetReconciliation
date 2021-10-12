@@ -14,8 +14,7 @@
 	response="$(curl -sS -X GET http://$node1/set/list)" && [ "$response" == "[1,2,3]" ]
 	response="$(curl -sS -X GET http://$node2/set/list)" && [ "$response" == "[]" ]
 
-	# response="$(curl -sS -X GET http://$node1/sync | awk ' /HTTP/ {print $2}')" && [ "$response" == "200" ]
-	response="$(curl -i -X GET http://$node1/set/sync | awk ' /HTTP/ {print $2}')" && [ "$response" == "200" ]
+	response="$(curl -i -X GET http://$node2/set/sync | awk ' /HTTP/ {print $2}')" && [ "$response" == "200" ]
 	response="$(curl -sS -X GET http://$node1/set/list)" && [ "$response" == "[1,2,3]" ]
 	response="$(curl -sS -X GET http://$node2/set/list)" && [ "$response" == "[1,2,3]" ]
 }

@@ -127,7 +127,7 @@ func TestMergeElements(t *testing.T) {
 	for _, element := range elements {
 		actualSet.AddElement(element)
 	}
-	actualSet = *actualSet.MergeElements(elementsToMerge)
+	actualSet = MergeElements(actualSet, elementsToMerge)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
@@ -143,7 +143,7 @@ func TestMergeElements_Empty(t *testing.T) {
 	for _, element := range elements {
 		actualSet.AddElement(element)
 	}
-	actualSet = *actualSet.MergeElements(elementsToMerge)
+	actualSet = MergeElements(actualSet, elementsToMerge)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
@@ -159,7 +159,7 @@ func TestMergeElements_BothEmpty(t *testing.T) {
 	for _, element := range elements {
 		actualSet.AddElement(element)
 	}
-	actualSet = *actualSet.MergeElements(elementsToMerge)
+	actualSet = MergeElements(actualSet, elementsToMerge)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
@@ -176,7 +176,7 @@ func TestMergeElements_Duplicate(t *testing.T) {
 	for _, element := range elements {
 		actualSet.AddElement(element)
 	}
-	actualSet = *actualSet.MergeElements(elementsToMerge)
+	actualSet = MergeElements(actualSet, elementsToMerge)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }

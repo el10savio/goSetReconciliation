@@ -41,19 +41,6 @@ func (set *Set) AddElement(element uint32) {
 	}
 }
 
-// MergeElements ...
-func (set *Set) MergeElements(elements []uint32) *Set {
-	if elements == nil {
-		return set
-	}
-
-	for _, element := range elements {
-		set.AddElement(element)
-	}
-
-	return set
-}
-
 // AddElementToBF ...
 func (set *Set) AddElementToBF(element uint32) bool {
 	array := make([]byte, 4)
@@ -66,6 +53,19 @@ func IsElementInBF(element uint32, BF *bloom.BloomFilter) bool {
 	array := make([]byte, 4)
 	binary.BigEndian.PutUint32(array, element)
 	return BF.Test(array)
+}
+
+// MergeElements ...
+func MergeElements(set Set, elements []uint32) Set {
+	if elements == nil {
+		return set
+	}
+
+	for _, element := range elements {
+		set.AddElement(element)
+	}
+
+	return set
 }
 
 // GetBF ...

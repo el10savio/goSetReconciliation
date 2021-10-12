@@ -87,7 +87,7 @@ comma_separated_peer_id_list=$(
 )
 
 for peer_index in "${!peers[@]}"; do
-    docker run -p "${peers[$peer_index]}":8080 --net $network -e "PEERS="$comma_separated_peer_id_list"" -e "NETWORK="$network"" --name="peer-$peer_index" -d set
+    docker run -p "${peers[$peer_index]}":8080 --net $network -e "PEERS="$comma_separated_peer_id_list"" -e "NETWORK="$network"" -e="HOST=peer-$peer_index" --name="peer-$peer_index" -d set
 done
 
 # Docker list peers on success

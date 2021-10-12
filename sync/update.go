@@ -11,10 +11,12 @@ func Update(Set set.Set, payload Payload) (set.Set, []uint32) {
 		return Set, []uint32{}
 	}
 
-	Set = *Set.MergeElements(payload.MissingElements)
 	missingElements := GetBFMissingElements(Set.GetElements(), payload.BF)
+	Set = set.MergeElements(Set, payload.MissingElements)
 
-	// _ = Send(Set, missingElements)
+	if len(missingElements) > 0 {
+		Send(Set, missingElements)
+	}
 
 	return Set, missingElements
 }

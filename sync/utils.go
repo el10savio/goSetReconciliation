@@ -21,6 +21,12 @@ func GetNetwork() string {
 	return os.Getenv("NETWORK") + ":8080"
 }
 
+// GetHost Obtains Host
+// From Environment Variable
+func GetHost() string {
+	return os.Getenv("HOST")
+}
+
 // SendRequest handles sending of an HTTP POST Request
 func SendRequest(url string, payload []byte) (int, error) {
 	if url == "" {
