@@ -10,7 +10,7 @@ import (
 
 func TestInitialize(t *testing.T) {
 	expectedSet := Set{
-		List: []uint32{},
+		List: []int{},
 		BF:   bloom.NewWithEstimates(setSize, falsePositiveRate),
 		Hash: uint64(0),
 	}
@@ -22,7 +22,7 @@ func TestInitialize(t *testing.T) {
 
 func TestClear(t *testing.T) {
 	expectedSet := Set{
-		List: []uint32{},
+		List: []int{},
 		BF:   bloom.NewWithEstimates(setSize, falsePositiveRate),
 		Hash: uint64(0),
 	}
@@ -32,27 +32,26 @@ func TestClear(t *testing.T) {
 	assert.Equal(t, expectedSet, actualSet)
 }
 
-func TestAddElement(t *testing.T) {
-	elementToAdd := uint32(1)
+func TestAddElements(t *testing.T) {
+	elementsToAdd := []int{1}
 
-	expectedSet := Set{List: []uint32{elementToAdd}}
+	expectedSet := Set{List: elementsToAdd}
 	actualSet := Initialize()
 	defer actualSet.Clear()
 
-	actualSet.AddElement(elementToAdd)
+	actualSet.AddElements(elementsToAdd)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
 
-func TestAddElement_Duplicate(t *testing.T) {
-	elementToAdd := uint32(1)
+func TestAddElements_Duplicate(t *testing.T) {
+	elementsToAdd := []int{1, 1}
 
-	expectedSet := Set{List: []uint32{elementToAdd}}
+	expectedSet := Set{List: []int{1}}
 	actualSet := Initialize()
 	defer actualSet.Clear()
 
-	actualSet.AddElement(elementToAdd)
-	actualSet.AddElement(elementToAdd)
+	actualSet.AddElements(elementsToAdd)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
@@ -61,11 +60,9 @@ func TestGetElements(t *testing.T) {
 	set := Initialize()
 	defer set.Clear()
 
-	set.AddElement(1)
-	set.AddElement(2)
-	set.AddElement(3)
+	set.AddElements([]int{1, 2, 3})
 
-	expectedElements := []uint32{1, 2, 3}
+	expectedElements := []int{1, 2, 3}
 	actualElements := set.GetElements()
 
 	assert.Equal(t, expectedElements, actualElements)
@@ -75,14 +72,14 @@ func TestGetElements_Empty(t *testing.T) {
 	set := Initialize()
 	defer set.Clear()
 
-	expectedElements := make([]uint32, 0)
+	expectedElements := make([]int, 0)
 	actualElements := set.GetElements()
 
 	assert.Equal(t, expectedElements, actualElements)
 }
 
 func TestIsElementInBF(t *testing.T) {
-	element := uint32(1)
+	element := int(1)
 	BF := bloom.NewWithEstimates(setSize, falsePositiveRate)
 	BF = addElementToBF(element, BF)
 	defer BF.ClearAll()
@@ -94,9 +91,9 @@ func TestIsElementInBF(t *testing.T) {
 }
 
 func TestIsElementInBF_NotPresent(t *testing.T) {
-	element := uint32(2)
+	element := int(2)
 	BF := bloom.NewWithEstimates(setSize, falsePositiveRate)
-	BF = addElementToBF(uint32(3), BF)
+	BF = addElementToBF(int(3), BF)
 	defer BF.ClearAll()
 
 	expectedCondition := false
@@ -106,7 +103,7 @@ func TestIsElementInBF_NotPresent(t *testing.T) {
 }
 
 func TestIsElementInBF_EmptyBF(t *testing.T) {
-	element := uint32(1)
+	element := int(1)
 	BF := bloom.NewWithEstimates(setSize, falsePositiveRate)
 	defer BF.ClearAll()
 
@@ -117,72 +114,64 @@ func TestIsElementInBF_EmptyBF(t *testing.T) {
 }
 
 func TestMergeElements(t *testing.T) {
-	elements, elementsToMerge := []uint32{1, 2}, []uint32{3, 4, 5}
-	elementsMerged := []uint32{1, 2, 3, 4, 5}
+	elements, elementsToMerge := []int{1, 2}, []int{3, 4, 5}
+	elementsMerged := []int{1, 2, 3, 4, 5}
 
 	expectedSet := Set{List: elementsMerged}
 	actualSet := Initialize()
 	defer actualSet.Clear()
 
-	for _, element := range elements {
-		actualSet.AddElement(element)
-	}
+	actualSet.AddElements(elements)
 	actualSet = MergeElements(actualSet, elementsToMerge)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
 
 func TestMergeElements_Empty(t *testing.T) {
-	elements, elementsToMerge := []uint32{1, 2}, []uint32{}
-	elementsMerged := []uint32{1, 2}
+	elements, elementsToMerge := []int{1, 2}, []int{}
+	elementsMerged := []int{1, 2}
 
 	expectedSet := Set{List: elementsMerged}
 	actualSet := Initialize()
 	defer actualSet.Clear()
 
-	for _, element := range elements {
-		actualSet.AddElement(element)
-	}
+	actualSet.AddElements(elements)
 	actualSet = MergeElements(actualSet, elementsToMerge)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
 
 func TestMergeElements_BothEmpty(t *testing.T) {
-	elements, elementsToMerge := []uint32{}, []uint32{}
-	elementsMerged := []uint32{}
+	elements, elementsToMerge := []int{}, []int{}
+	elementsMerged := []int{}
 
 	expectedSet := Set{List: elementsMerged}
 	actualSet := Initialize()
 	defer actualSet.Clear()
 
-	for _, element := range elements {
-		actualSet.AddElement(element)
-	}
+	actualSet.AddElements(elements)
 	actualSet = MergeElements(actualSet, elementsToMerge)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
 
 func TestMergeElements_Duplicate(t *testing.T) {
-	elements := []uint32{1, 2}
-	elementsToMerge := []uint32{1}
-	elementsMerged := []uint32{1, 2}
+	elements := []int{1, 2}
+	elementsToMerge := []int{1}
+	elementsMerged := []int{1, 2}
 
 	expectedSet := Set{List: elementsMerged}
 	actualSet := Initialize()
 	defer actualSet.Clear()
 
-	for _, element := range elements {
-		actualSet.AddElement(element)
-	}
+	actualSet.AddElements(elements)
 	actualSet = MergeElements(actualSet, elementsToMerge)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
 
-func addElementToBF(element uint32, BF *bloom.BloomFilter) *bloom.BloomFilter {
+func addElementToBF(element int, BF *bloom.BloomFilter) *bloom.BloomFilter {
 	array := make([]byte, 4)
-	binary.BigEndian.PutUint32(array, element)
+	binary.BigEndian.PutUint32(array, uint32(element))
 	return BF.Add(array)
 }

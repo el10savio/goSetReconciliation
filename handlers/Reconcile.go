@@ -23,7 +23,7 @@ func Reconcile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	missingElements := []uint32{}
+	missingElements := []int{}
 
 	// Reconcile the given value to our stored Set
 	Set, missingElements = sync.Update(Set, payload)

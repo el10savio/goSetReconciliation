@@ -8,50 +8,48 @@ import (
 )
 
 func TestGetBFMissingElements(t *testing.T) {
-	list := []uint32{1}
+	list := []int{1}
 	set := set.Initialize()
 	defer set.Clear()
 
-	set.AddElement(2)
-	set.AddElement(3)
+	set.AddElements([]int{2, 3})
 
-	expectedElements := []uint32{1}
+	expectedElements := []int{1}
 	actualElements := GetBFMissingElements(list, set.BF)
 
 	assert.Equal(t, expectedElements, actualElements)
 }
 
 func TestGetBFMissingElements_EmptyBF(t *testing.T) {
-	list := []uint32{1, 2, 3}
+	list := []int{1, 2, 3}
 	set := set.Initialize()
 	defer set.Clear()
 
-	expectedElements := []uint32{1, 2, 3}
+	expectedElements := []int{1, 2, 3}
 	actualElements := GetBFMissingElements(list, set.BF)
 
 	assert.Equal(t, expectedElements, actualElements)
 }
 
 func TestGetBFMissingElements_EmptyList(t *testing.T) {
-	list := []uint32{}
+	list := []int{}
 	set := set.Initialize()
 	defer set.Clear()
 
-	set.AddElement(2)
-	set.AddElement(3)
+	set.AddElements([]int{2, 3})
 
-	expectedElements := []uint32{}
+	expectedElements := []int{}
 	actualElements := GetBFMissingElements(list, set.BF)
 
 	assert.Equal(t, expectedElements, actualElements)
 }
 
 func TestGetBFMissingElements_BothEmpty(t *testing.T) {
-	list := []uint32{}
+	list := []int{}
 	set := set.Initialize()
 	defer set.Clear()
 
-	expectedElements := []uint32{}
+	expectedElements := []int{}
 	actualElements := GetBFMissingElements(list, set.BF)
 
 	assert.Equal(t, expectedElements, actualElements)
@@ -64,26 +62,48 @@ func TestUpdate(t *testing.T) {
 	payloadSet := set.Initialize()
 	defer payloadSet.Clear()
 
-	baseSet.AddElement(1)
-	baseSet.AddElement(2)
-
-	payloadSet.AddElement(1)
-	payloadSet.AddElement(2)
-	payloadSet.AddElement(3)
+	baseSet.AddElements([]int{1, 2})
+	payloadSet.AddElements([]int{1, 2, 3})
 
 	payload := Payload{
-		MissingElements: []uint32{3},
+		MissingElements: []int{3},
 		BF:              payloadSet.GetBF(),
 		Hash:            payloadSet.GetHash(),
 	}
 
-	expectedMissingElements := []uint32{}
+	expectedMissingElements := []int{}
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
 
-	expectedSet.AddElement(1)
-	expectedSet.AddElement(2)
-	expectedSet.AddElement(3)
+	expectedSet.AddElements([]int{1, 2, 3})
+
+	baseSet, actualMissingElements := Update(baseSet, payload)
+
+	assert.Equal(t, expectedSet, baseSet)
+	assert.Equal(t, expectedMissingElements, actualMissingElements)
+}
+
+func TestUpdate_BothEqual(t *testing.T) {
+	baseSet := set.Initialize()
+	defer baseSet.Clear()
+
+	payloadSet := set.Initialize()
+	defer payloadSet.Clear()
+
+	baseSet.AddElements([]int{1, 2, 3})
+	payloadSet.AddElements([]int{1, 2, 3})
+
+	payload := Payload{
+		MissingElements: []int{},
+		BF:              payloadSet.GetBF(),
+		Hash:            payloadSet.GetHash(),
+	}
+
+	expectedMissingElements := []int{}
+	expectedSet := set.Initialize()
+	defer expectedSet.Clear()
+
+	expectedSet.AddElements([]int{1, 2, 3})
 
 	baseSet, actualMissingElements := Update(baseSet, payload)
 
@@ -98,23 +118,19 @@ func TestUpdate_EmptySet(t *testing.T) {
 	payloadSet := set.Initialize()
 	defer payloadSet.Clear()
 
-	payloadSet.AddElement(1)
-	payloadSet.AddElement(2)
-	payloadSet.AddElement(3)
+	payloadSet.AddElements([]int{1, 2, 3})
 
 	payload := Payload{
-		MissingElements: []uint32{1, 2, 3},
+		MissingElements: []int{1, 2, 3},
 		BF:              payloadSet.GetBF(),
 		Hash:            payloadSet.GetHash(),
 	}
 
-	expectedMissingElements := []uint32{}
+	expectedMissingElements := []int{}
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
 
-	expectedSet.AddElement(1)
-	expectedSet.AddElement(2)
-	expectedSet.AddElement(3)
+	expectedSet.AddElements([]int{1, 2, 3})
 
 	baseSet, actualMissingElements := Update(baseSet, payload)
 
@@ -126,24 +142,22 @@ func TestUpdate_EmptyPayload(t *testing.T) {
 	baseSet := set.Initialize()
 	defer baseSet.Clear()
 
-	baseSet.AddElement(1)
-	baseSet.AddElement(2)
+	baseSet.AddElements([]int{1, 2})
 
 	payloadSet := set.Initialize()
 	defer payloadSet.Clear()
 
 	payload := Payload{
-		MissingElements: []uint32{},
+		MissingElements: []int{},
 		BF:              payloadSet.GetBF(),
 		Hash:            payloadSet.GetHash(),
 	}
 
-	expectedMissingElements := []uint32{1, 2}
+	expectedMissingElements := []int{1, 2}
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
 
-	expectedSet.AddElement(1)
-	expectedSet.AddElement(2)
+	expectedSet.AddElements([]int{1, 2})
 
 	baseSet, actualMissingElements := Update(baseSet, payload)
 
@@ -159,12 +173,12 @@ func TestUpdate_BothEmpty(t *testing.T) {
 	defer payloadSet.Clear()
 
 	payload := Payload{
-		MissingElements: []uint32{},
+		MissingElements: []int{},
 		BF:              payloadSet.GetBF(),
 		Hash:            payloadSet.GetHash(),
 	}
 
-	expectedMissingElements := []uint32{}
+	expectedMissingElements := []int{}
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
 
@@ -178,14 +192,13 @@ func TestUpdate_FullSync(t *testing.T) {
 	baseSet := set.Initialize()
 	defer baseSet.Clear()
 
-	baseSet.AddElement(1)
-	baseSet.AddElement(2)
+	baseSet.AddElements([]int{1, 2})
 
 	payloadSet := set.Initialize()
 	defer payloadSet.Clear()
 
 	payload := Payload{
-		MissingElements: []uint32{},
+		MissingElements: []int{},
 		BF:              payloadSet.GetBF(),
 		Hash:            payloadSet.GetHash(),
 	}
@@ -198,12 +211,11 @@ func TestUpdate_FullSync(t *testing.T) {
 		Hash:            baseSet.GetHash(),
 	}
 
-	expectedMissingElements := []uint32{}
+	expectedMissingElements := []int{}
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
 
-	expectedSet.AddElement(1)
-	expectedSet.AddElement(2)
+	expectedSet.AddElements([]int{1, 2})
 
 	payloadSet, actualMissingElements = Update(payloadSet, payload)
 
@@ -216,35 +228,24 @@ func TestUpdate_MixedSync(t *testing.T) {
 	baseSet := set.Initialize()
 	defer baseSet.Clear()
 
-	baseSet.AddElement(1)
-	baseSet.AddElement(2)
-	baseSet.AddElement(6)
+	baseSet.AddElements([]int{1, 2, 6})
 
 	payloadSet := set.Initialize()
 	defer payloadSet.Clear()
 
-	baseSet.AddElement(1)
-	baseSet.AddElement(2)
-	baseSet.AddElement(3)
-	baseSet.AddElement(4)
-	baseSet.AddElement(5)
+	baseSet.AddElements([]int{1, 2, 3, 4, 5})
 
 	payload := Payload{
-		MissingElements: []uint32{},
+		MissingElements: []int{},
 		BF:              payloadSet.GetBF(),
 		Hash:            payloadSet.GetHash(),
 	}
 
-	expectedMissingElements := []uint32{1, 2, 6, 3, 4, 5}
+	expectedMissingElements := []int{1, 2, 6, 3, 4, 5}
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
 
-	expectedSet.AddElement(1)
-	expectedSet.AddElement(2)
-	expectedSet.AddElement(6)
-	expectedSet.AddElement(3)
-	expectedSet.AddElement(4)
-	expectedSet.AddElement(5)
+	expectedSet.AddElements([]int{1, 2, 6, 3, 4, 5})
 
 	baseSet, actualMissingElements := Update(baseSet, payload)
 
@@ -257,7 +258,7 @@ func TestUpdate_MixedSync(t *testing.T) {
 		Hash:            baseSet.GetHash(),
 	}
 
-	expectedMissingElements = []uint32{}
+	expectedMissingElements = []int{}
 
 	payloadSet, actualMissingElements = Update(payloadSet, payload)
 

@@ -14,7 +14,7 @@ const (
 
 // Set ...
 type Set struct {
-	List []uint32           `hash:"set"`
+	List []int              `hash:"set"`
 	BF   *bloom.BloomFilter `hash:"ignore"`
 	Hash uint64             `hash:"ignore"`
 }
@@ -22,49 +22,44 @@ type Set struct {
 // Initialize ...
 func Initialize() Set {
 	return Set{
-		List: []uint32{},
+		List: []int{},
 		BF:   bloom.NewWithEstimates(setSize, falsePositiveRate),
 		Hash: uint64(0),
 	}
 }
 
 // GetElements ...
-func (set *Set) GetElements() []uint32 {
+func (set *Set) GetElements() []int {
 	return set.List
 }
 
-// AddElement ...
-func (set *Set) AddElement(element uint32) {
-	if !set.AddElementToBF(element) {
-		set.List = append(set.List, element)
-		set.Hash, _ = hashstructure.Hash(set, nil)
+// AddElements ...
+func (set *Set) AddElements(elements []int) {
+	for _, element := range elements {
+		if !set.AddElementToBF(element) {
+			set.List = append(set.List, element)
+			set.Hash, _ = hashstructure.Hash(set, nil)
+		}
 	}
 }
 
 // AddElementToBF ...
-func (set *Set) AddElementToBF(element uint32) bool {
+func (set *Set) AddElementToBF(element int) bool {
 	array := make([]byte, 4)
-	binary.BigEndian.PutUint32(array, element)
+	binary.BigEndian.PutUint32(array, uint32(element))
 	return set.BF.TestAndAdd(array)
 }
 
 // IsElementInBF ...
-func IsElementInBF(element uint32, BF *bloom.BloomFilter) bool {
+func IsElementInBF(element int, BF *bloom.BloomFilter) bool {
 	array := make([]byte, 4)
-	binary.BigEndian.PutUint32(array, element)
+	binary.BigEndian.PutUint32(array, uint32(element))
 	return BF.Test(array)
 }
 
 // MergeElements ...
-func MergeElements(set Set, elements []uint32) Set {
-	if elements == nil {
-		return set
-	}
-
-	for _, element := range elements {
-		set.AddElement(element)
-	}
-
+func MergeElements(set Set, elements []int) Set {
+	set.AddElements(elements)
 	return set
 }
 
@@ -80,7 +75,7 @@ func (set *Set) GetHash() uint64 {
 
 // Clear ...
 func (set *Set) Clear() {
-	set.List = []uint32{}
+	set.List = []int{}
 	set.BF.ClearAll()
 	set.Hash = uint64(0)
 }

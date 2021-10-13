@@ -9,7 +9,7 @@ import (
 )
 
 // Send ...
-func Send(Set set.Set, missingElements []uint32) error {
+func Send(Set set.Set, missingElements []int) error {
 	// Send BF & Hash
 	payload := Payload{
 		MissingElements: missingElements,
@@ -17,7 +17,12 @@ func Send(Set set.Set, missingElements []uint32) error {
 		Hash:            Set.GetHash(),
 	}
 
-	for _, peer := range GetPeerList() {
+	peers := GetPeerList()
+	if len(peers) == 0 {
+		return errors.New("No Peers Provided")
+	}
+
+	for _, peer := range peers {
 		if peer == GetHost() {
 			continue
 		}

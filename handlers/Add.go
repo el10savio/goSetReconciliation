@@ -3,14 +3,13 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 
 	log "github.com/sirupsen/logrus"
 )
 
 // addBody ...
 type addBody struct {
-	Value string `json:"value"`
+	Values []int `json:"values"`
 }
 
 // Add ...
@@ -27,15 +26,7 @@ func Add(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Add the given value to our stored Set
-	element, err := strconv.ParseUint(requestBody.Value, 10, 32)
-	if err != nil {
-		log.WithFields(log.Fields{"error": err}).Error("failed to parse value")
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	Set.AddElement(uint32(element))
+	Set.AddElements(requestBody.Values)
 	// if err != nil {
 	// 	log.WithFields(log.Fields{"error": err}).Error("failed to add value")
 	// 	w.WriteHeader(http.StatusInternalServerError)
@@ -45,9 +36,9 @@ func Add(w http.ResponseWriter, r *http.Request) {
 	// DEBUG log in the case of success indicating
 	// the new Set and the value added
 	log.WithFields(log.Fields{
-		"list":  Set.GetElements(),
-		"value": requestBody.Value,
-	}).Debug("successful wstring addition")
+		"list":   Set.GetElements(),
+		"values": requestBody.Values,
+	}).Debug("successful set addition")
 
 	// Return HTTP 200 OK in the case of success
 	w.WriteHeader(http.StatusOK)

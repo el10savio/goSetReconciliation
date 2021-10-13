@@ -26,21 +26,14 @@ func TestIndex(t *testing.T) {
 
 func TestAdd(t *testing.T) {
 	defer testClearUtil(t)
-	testAddUtil(t, "1", http.StatusOK)
+	testAddUtil(t, "[1]", http.StatusOK)
 }
 
 func TestGet(t *testing.T) {
 	defer testClearUtil(t)
-	testAddUtil(t, "1", http.StatusOK)
+	testAddUtil(t, "[1]", http.StatusOK)
 	testGetUtil(t, "[1]\n", http.StatusOK)
-	testGetHashUtil(t, "9859332470759935394\n", http.StatusOK)
-}
-
-func TestGet_NonNumberElement(t *testing.T) {
-	defer testClearUtil(t)
-	testAddUtil(t, "+", http.StatusInternalServerError)
-	testGetUtil(t, "[]\n", http.StatusOK)
-	testGetHashUtil(t, "0\n", http.StatusOK)
+	testGetHashUtil(t, "4937410033792675729\n", http.StatusOK)
 }
 
 func TestGet_EmptyElement(t *testing.T) {
@@ -51,23 +44,20 @@ func TestGet_EmptyElement(t *testing.T) {
 
 func TestGet_DuplicateElement(t *testing.T) {
 	defer testClearUtil(t)
-	testAddUtil(t, "1", http.StatusOK)
-	testAddUtil(t, "1", http.StatusOK)
+	testAddUtil(t, "[1,1]", http.StatusOK)
 	testGetUtil(t, "[1]\n", http.StatusOK)
-	testGetHashUtil(t, "9859332470759935394\n", http.StatusOK)
+	testGetHashUtil(t, "4937410033792675729\n", http.StatusOK)
 }
 
 func TestGet_MultipleElements(t *testing.T) {
 	defer testClearUtil(t)
-	testAddUtil(t, "1", http.StatusOK)
-	testAddUtil(t, "2", http.StatusOK)
-	testAddUtil(t, "3", http.StatusOK)
+	testAddUtil(t, "[1,2,3]", http.StatusOK)
 	testGetUtil(t, "[1,2,3]\n", http.StatusOK)
-	testGetHashUtil(t, "4501587851448633642\n", http.StatusOK)
+	testGetHashUtil(t, "8822251702295816746\n", http.StatusOK)
 }
 
-func testAddUtil(t *testing.T, element string, expectedStatus int) {
-	payload := fmt.Sprintf(`{"value": "%s"}`, element)
+func testAddUtil(t *testing.T, elements string, expectedStatus int) {
+	payload := fmt.Sprintf(`{"values":%s}`, elements)
 
 	request, err := http.NewRequest("POST", "/set/add", strings.NewReader(payload))
 	if err != nil {
