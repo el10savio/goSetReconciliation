@@ -12,3 +12,8 @@ echo "Full Sync Tests"
 bash ${scripts_dir}/provision.sh 2
 bats --tap ${scripts_dir}/bats/full-sync.bats
 bash ${scripts_dir}/teardown.sh
+
+echo "Mixed Sync Tests"
+bash ${scripts_dir}/provision.sh 2
+bats --tap ${scripts_dir}/bats/mixed-sync.bats
+bash ${scripts_dir}/teardown.sh

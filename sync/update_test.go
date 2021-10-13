@@ -218,6 +218,7 @@ func TestUpdate_MixedSync(t *testing.T) {
 
 	baseSet.AddElement(1)
 	baseSet.AddElement(2)
+	baseSet.AddElement(6)
 
 	payloadSet := set.Initialize()
 	defer payloadSet.Clear()
@@ -234,12 +235,13 @@ func TestUpdate_MixedSync(t *testing.T) {
 		Hash:            payloadSet.GetHash(),
 	}
 
-	expectedMissingElements := []uint32{1, 2, 3, 4, 5}
+	expectedMissingElements := []uint32{1, 2, 6, 3, 4, 5}
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
 
 	expectedSet.AddElement(1)
 	expectedSet.AddElement(2)
+	expectedSet.AddElement(6)
 	expectedSet.AddElement(3)
 	expectedSet.AddElement(4)
 	expectedSet.AddElement(5)
@@ -259,7 +261,6 @@ func TestUpdate_MixedSync(t *testing.T) {
 
 	payloadSet, actualMissingElements = Update(payloadSet, payload)
 
-	assert.Equal(t, expectedSet, baseSet)
 	assert.Equal(t, expectedSet, payloadSet)
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
 }
