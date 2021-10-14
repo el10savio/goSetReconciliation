@@ -20,8 +20,7 @@
 	IFS=', ' read -r -a ports_list <<< "$ports"
 
 	for port in "${ports_list[@]}"; do
-			response="$(curl -sS -i http://$port/set/add --data '{"value": "1"}' | awk ' /HTTP/ {print $2}')" && [ "$response" == "200" ]
-			response="$(curl -sS -i http://$port/set/add --data '{"value": "2"}' | awk ' /HTTP/ {print $2}')" && [ "$response" == "200" ]
+			response="$(curl -sS -i http://$port/set/add --data '{"values": [1,2]}' | awk ' /HTTP/ {print $2}')" && [ "$response" == "200" ]
 	done 
 }
 
@@ -40,8 +39,7 @@
 	IFS=', ' read -r -a ports_list <<< "$ports"
 
 	for port in "${ports_list[@]}"; do
-			response="$(curl -sS -i http://$port/set/add --data '{"value": "1"}' | awk ' /HTTP/ {print $2}')" && [ "$response" == "200" ]
-			response="$(curl -sS -i http://$port/set/add --data '{"value": "2"}' | awk ' /HTTP/ {print $2}')" && [ "$response" == "200" ]
+			response="$(curl -sS -i http://$port/set/add --data '{"values": [1,2]}' | awk ' /HTTP/ {print $2}')" && [ "$response" == "200" ]
 	done
 
 	for port in "${ports_list[@]}"; do
