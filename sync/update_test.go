@@ -224,6 +224,56 @@ func TestUpdate_FullSync(t *testing.T) {
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
 }
 
+func TestUpdate_FullSyncOtherNode(t *testing.T) {
+	baseSet := set.Initialize()
+	defer baseSet.Clear()
+
+	payloadSet := set.Initialize()
+	defer payloadSet.Clear()
+
+	payloadSet.AddElements([]int{1, 2})
+
+	payload := Payload{
+		MissingElements: []int{},
+		BF:              payloadSet.GetBF(),
+		Hash:            payloadSet.GetHash(),
+	}
+
+	expectedMissingElements := []int{}
+	baseSet, actualMissingElements := Update(baseSet, payload)
+
+	assert.Equal(t, expectedMissingElements, actualMissingElements)
+
+	// baseSet Unchanged
+
+	payload = Payload{
+		MissingElements: actualMissingElements,
+		BF:              baseSet.GetBF(),
+		Hash:            baseSet.GetHash(),
+	}
+
+	expectedMissingElements = []int{1, 2}
+	payloadSet, actualMissingElements = Update(payloadSet, payload)
+
+	assert.Equal(t, expectedMissingElements, actualMissingElements)
+
+	// payloadSet Unchanged
+
+	payload = Payload{
+		MissingElements: actualMissingElements,
+		BF:              payloadSet.GetBF(),
+		Hash:            payloadSet.GetHash(),
+	}
+
+	expectedMissingElements = []int{}
+	baseSet, actualMissingElements = Update(baseSet, payload)
+
+	// baseSet Changed
+
+	assert.Equal(t, expectedMissingElements, actualMissingElements)
+	assert.Equal(t, payloadSet, baseSet)
+}
+
 func TestUpdate_MixedSync(t *testing.T) {
 	baseSet := set.Initialize()
 	defer baseSet.Clear()
