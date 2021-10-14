@@ -10,7 +10,7 @@ import (
 // GetHash ...
 func GetHash(w http.ResponseWriter, r *http.Request) {
 	// Get the Hash from the Set
-	hash := Set.GetHash()
+	hash := Set.Hash
 
 	// DEBUG log in the case of success
 	// indicating the Hash

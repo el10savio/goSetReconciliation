@@ -7,7 +7,7 @@ import (
 
 // Update ...
 func Update(Set set.Set, payload Payload) (set.Set, []int) {
-	if Set.GetHash() == payload.Hash {
+	if Set.Hash == payload.Hash {
 		return Set, []int{}
 	}
 

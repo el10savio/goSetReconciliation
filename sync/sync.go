@@ -13,8 +13,8 @@ func Send(Set set.Set, missingElements []int) error {
 	// Send BF & Hash
 	payload := Payload{
 		MissingElements: missingElements,
-		BF:              Set.GetBF(),
-		Hash:            Set.GetHash(),
+		BF:              Set.BF,
+		Hash:            Set.Hash,
 	}
 
 	peers := GetPeerList()

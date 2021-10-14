@@ -67,8 +67,8 @@ func TestUpdate(t *testing.T) {
 
 	payload := Payload{
 		MissingElements: []int{3},
-		BF:              payloadSet.GetBF(),
-		Hash:            payloadSet.GetHash(),
+		BF:              payloadSet.BF,
+		Hash:            payloadSet.Hash,
 	}
 
 	expectedMissingElements := []int{}
@@ -95,8 +95,8 @@ func TestUpdate_BothEqual(t *testing.T) {
 
 	payload := Payload{
 		MissingElements: []int{},
-		BF:              payloadSet.GetBF(),
-		Hash:            payloadSet.GetHash(),
+		BF:              payloadSet.BF,
+		Hash:            payloadSet.Hash,
 	}
 
 	expectedMissingElements := []int{}
@@ -122,8 +122,8 @@ func TestUpdate_EmptySet(t *testing.T) {
 
 	payload := Payload{
 		MissingElements: []int{1, 2, 3},
-		BF:              payloadSet.GetBF(),
-		Hash:            payloadSet.GetHash(),
+		BF:              payloadSet.BF,
+		Hash:            payloadSet.Hash,
 	}
 
 	expectedMissingElements := []int{}
@@ -149,8 +149,8 @@ func TestUpdate_EmptyPayload(t *testing.T) {
 
 	payload := Payload{
 		MissingElements: []int{},
-		BF:              payloadSet.GetBF(),
-		Hash:            payloadSet.GetHash(),
+		BF:              payloadSet.BF,
+		Hash:            payloadSet.Hash,
 	}
 
 	expectedMissingElements := []int{1, 2}
@@ -174,8 +174,8 @@ func TestUpdate_BothEmpty(t *testing.T) {
 
 	payload := Payload{
 		MissingElements: []int{},
-		BF:              payloadSet.GetBF(),
-		Hash:            payloadSet.GetHash(),
+		BF:              payloadSet.BF,
+		Hash:            payloadSet.Hash,
 	}
 
 	expectedMissingElements := []int{}
@@ -199,16 +199,16 @@ func TestUpdate_FullSync(t *testing.T) {
 
 	payload := Payload{
 		MissingElements: []int{},
-		BF:              payloadSet.GetBF(),
-		Hash:            payloadSet.GetHash(),
+		BF:              payloadSet.BF,
+		Hash:            payloadSet.Hash,
 	}
 
 	baseSet, actualMissingElements := Update(baseSet, payload)
 
 	payload = Payload{
 		MissingElements: actualMissingElements,
-		BF:              baseSet.GetBF(),
-		Hash:            baseSet.GetHash(),
+		BF:              baseSet.BF,
+		Hash:            baseSet.Hash,
 	}
 
 	expectedMissingElements := []int{}
@@ -235,8 +235,8 @@ func TestUpdate_FullSyncOtherNode(t *testing.T) {
 
 	payload := Payload{
 		MissingElements: []int{},
-		BF:              payloadSet.GetBF(),
-		Hash:            payloadSet.GetHash(),
+		BF:              payloadSet.BF,
+		Hash:            payloadSet.Hash,
 	}
 
 	expectedMissingElements := []int{}
@@ -248,8 +248,8 @@ func TestUpdate_FullSyncOtherNode(t *testing.T) {
 
 	payload = Payload{
 		MissingElements: actualMissingElements,
-		BF:              baseSet.GetBF(),
-		Hash:            baseSet.GetHash(),
+		BF:              baseSet.BF,
+		Hash:            baseSet.Hash,
 	}
 
 	expectedMissingElements = []int{1, 2}
@@ -261,8 +261,8 @@ func TestUpdate_FullSyncOtherNode(t *testing.T) {
 
 	payload = Payload{
 		MissingElements: actualMissingElements,
-		BF:              payloadSet.GetBF(),
-		Hash:            payloadSet.GetHash(),
+		BF:              payloadSet.BF,
+		Hash:            payloadSet.Hash,
 	}
 
 	expectedMissingElements = []int{}
@@ -287,8 +287,8 @@ func TestUpdate_MixedSync(t *testing.T) {
 
 	payload := Payload{
 		MissingElements: []int{},
-		BF:              payloadSet.GetBF(),
-		Hash:            payloadSet.GetHash(),
+		BF:              payloadSet.BF,
+		Hash:            payloadSet.Hash,
 	}
 
 	expectedMissingElements := []int{1, 2, 6, 3, 4, 5}
@@ -304,8 +304,8 @@ func TestUpdate_MixedSync(t *testing.T) {
 
 	payload = Payload{
 		MissingElements: actualMissingElements,
-		BF:              baseSet.GetBF(),
-		Hash:            baseSet.GetHash(),
+		BF:              baseSet.BF,
+		Hash:            baseSet.Hash,
 	}
 
 	expectedMissingElements = []int{}

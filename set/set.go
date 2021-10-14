@@ -63,16 +63,6 @@ func MergeElements(set Set, elements []int) Set {
 	return set
 }
 
-// GetBF ...
-func (set *Set) GetBF() *bloom.BloomFilter {
-	return set.BF
-}
-
-// GetHash ...
-func (set *Set) GetHash() uint64 {
-	return set.Hash
-}
-
 // Clear ...
 func (set *Set) Clear() {
 	set.List = []int{}

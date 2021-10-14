@@ -10,7 +10,7 @@ import (
 // GetBloomFilter ...
 func GetBloomFilter(w http.ResponseWriter, r *http.Request) {
 	// Get the Bloom Filter from the Set
-	bloomFilter := Set.GetBF()
+	bloomFilter := Set.BF
 
 	// DEBUG log in the case of success
 	// indicating the Bloom Filter
