@@ -25,12 +25,11 @@ func Reconcile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	missingElements := []int{}
-	oldHash := Set.Hash
 
 	// Reconcile the given value to our stored Set
 	Set, missingElements = sync.Update(Set, payload)
 
-	if len(missingElements) > 0 || oldHash != Set.Hash {
+	if len(missingElements) > 0 || Set.Hash != payload.Hash {
 		fmt.Println("Phase 2", missingElements)
 		if err := sync.Send(Set, missingElements); err != nil {
 			log.WithFields(log.Fields{"error": err}).Error("Phase 2 error")
