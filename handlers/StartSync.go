@@ -23,7 +23,7 @@ func StartSync(w http.ResponseWriter, r *http.Request) {
 	// DEBUG log in the case of success
 	log.WithFields(log.Fields{
 		"set": Set,
-	}).Debug("successful set sync")
+	}).Debug("successful set sync start")
 
 	// Return HTTP 200 OK
 	// in the case of success

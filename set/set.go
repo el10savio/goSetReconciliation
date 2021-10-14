@@ -55,9 +55,8 @@ func (set *Set) AddElements(elements []int) {
 }
 
 // AddElementToBF updates the Bloom Filter with the
-// new element entry by converting it to it binary form
-// & then checking if it was present in the filter
-// before & adds it in if it is unique
+// new element by converting it into binary
+// and adds it in if it is unique
 func (set *Set) AddElementToBF(element int) bool {
 	array := make([]byte, 4)
 	binary.BigEndian.PutUint32(array, uint32(element))
@@ -73,14 +72,15 @@ func IsElementInBF(element int, BF *bloom.BloomFilter) bool {
 }
 
 // MergeElements takes a list of elements
-// to be added into the Set
+// to be added into & a Set and returns the
+// Set merged with the given elements
 func MergeElements(set Set, elements []int) Set {
 	set.AddElements(elements)
 	return set
 }
 
 // Clear resets the set
-// & its parametes
+// and its parametes
 func (set *Set) Clear() {
 	set.List = []int{}
 	set.BF.ClearAll()
