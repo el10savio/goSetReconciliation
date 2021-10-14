@@ -27,11 +27,6 @@ func Add(w http.ResponseWriter, r *http.Request) {
 	}
 
 	Set.AddElements(requestBody.Values)
-	// if err != nil {
-	// 	log.WithFields(log.Fields{"error": err}).Error("failed to add value")
-	// 	w.WriteHeader(http.StatusInternalServerError)
-	// 	return
-	// }
 
 	// DEBUG log in the case of success indicating
 	// the new Set and the value added

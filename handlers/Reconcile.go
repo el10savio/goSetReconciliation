@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	log "github.com/sirupsen/logrus"
@@ -12,12 +11,11 @@ import (
 
 // Reconcile ...
 func Reconcile(w http.ResponseWriter, r *http.Request) {
-	var err error
 	var payload sync.Payload
 
 	// Obtain the value & position from POST Request Body
 	decoder := json.NewDecoder(r.Body)
-	err = decoder.Decode(&payload)
+	err := decoder.Decode(&payload)
 	if err != nil {
 		log.WithFields(log.Fields{"error": err}).Error("failed parse request body")
 		w.WriteHeader(http.StatusInternalServerError)
@@ -29,11 +27,15 @@ func Reconcile(w http.ResponseWriter, r *http.Request) {
 	// Reconcile the given value to our stored Set
 	Set, missingElements = sync.Update(Set, payload)
 
+	// TODO: Add explanation here for Phase 2
 	if len(missingElements) > 0 || Set.Hash != payload.Hash {
-		fmt.Println("Phase 2", missingElements)
-		if err := sync.Send(Set, missingElements); err != nil {
+		err := sync.Send(Set, missingElements)
+		if err != nil {
 			log.WithFields(log.Fields{"error": err}).Error("Phase 2 error")
 		}
+		log.WithFields(log.Fields{
+			"set": Set, "missing elements": missingElements,
+		}).Debug("completed sync phase 2")
 	}
 
 	// DEBUG log in the case of success indicating

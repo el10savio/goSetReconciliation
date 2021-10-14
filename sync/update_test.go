@@ -72,12 +72,12 @@ func TestUpdate(t *testing.T) {
 	}
 
 	expectedMissingElements := []int{}
+	baseSet, actualMissingElements := Update(baseSet, payload)
+
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
 
 	expectedSet.AddElements([]int{1, 2, 3})
-
-	baseSet, actualMissingElements := Update(baseSet, payload)
 
 	assert.Equal(t, expectedSet, baseSet)
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
@@ -100,12 +100,12 @@ func TestUpdate_BothEqual(t *testing.T) {
 	}
 
 	expectedMissingElements := []int{}
+	baseSet, actualMissingElements := Update(baseSet, payload)
+
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
 
 	expectedSet.AddElements([]int{1, 2, 3})
-
-	baseSet, actualMissingElements := Update(baseSet, payload)
 
 	assert.Equal(t, expectedSet, baseSet)
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
@@ -127,12 +127,12 @@ func TestUpdate_EmptySet(t *testing.T) {
 	}
 
 	expectedMissingElements := []int{}
+	baseSet, actualMissingElements := Update(baseSet, payload)
+
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
 
 	expectedSet.AddElements([]int{1, 2, 3})
-
-	baseSet, actualMissingElements := Update(baseSet, payload)
 
 	assert.Equal(t, expectedSet, baseSet)
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
@@ -154,12 +154,12 @@ func TestUpdate_EmptyPayload(t *testing.T) {
 	}
 
 	expectedMissingElements := []int{1, 2}
+	baseSet, actualMissingElements := Update(baseSet, payload)
+
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
 
 	expectedSet.AddElements([]int{1, 2})
-
-	baseSet, actualMissingElements := Update(baseSet, payload)
 
 	assert.Equal(t, expectedSet, baseSet)
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
@@ -179,10 +179,10 @@ func TestUpdate_BothEmpty(t *testing.T) {
 	}
 
 	expectedMissingElements := []int{}
+	baseSet, actualMissingElements := Update(baseSet, payload)
+
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
-
-	baseSet, actualMissingElements := Update(baseSet, payload)
 
 	assert.Equal(t, expectedSet, baseSet)
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
@@ -212,12 +212,12 @@ func TestUpdate_FullSync(t *testing.T) {
 	}
 
 	expectedMissingElements := []int{}
+	payloadSet, actualMissingElements = Update(payloadSet, payload)
+
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
 
 	expectedSet.AddElements([]int{1, 2})
-
-	payloadSet, actualMissingElements = Update(payloadSet, payload)
 
 	assert.Equal(t, expectedSet, baseSet)
 	assert.Equal(t, baseSet, payloadSet)
@@ -292,12 +292,12 @@ func TestUpdate_MixedSync(t *testing.T) {
 	}
 
 	expectedMissingElements := []int{1, 2, 6, 3, 4, 5}
+	baseSet, actualMissingElements := Update(baseSet, payload)
+
 	expectedSet := set.Initialize()
 	defer expectedSet.Clear()
 
 	expectedSet.AddElements([]int{1, 2, 6, 3, 4, 5})
-
-	baseSet, actualMissingElements := Update(baseSet, payload)
 
 	assert.Equal(t, expectedSet, baseSet)
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
@@ -309,7 +309,6 @@ func TestUpdate_MixedSync(t *testing.T) {
 	}
 
 	expectedMissingElements = []int{}
-
 	payloadSet, actualMissingElements = Update(payloadSet, payload)
 
 	assert.Equal(t, expectedSet, payloadSet)

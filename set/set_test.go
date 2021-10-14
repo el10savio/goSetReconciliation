@@ -79,7 +79,8 @@ func TestGetElements_Empty(t *testing.T) {
 }
 
 func TestIsElementInBF(t *testing.T) {
-	element := int(1)
+	element := 1
+
 	BF := bloom.NewWithEstimates(setSize, falsePositiveRate)
 	BF = addElementToBF(element, BF)
 	defer BF.ClearAll()
@@ -91,7 +92,8 @@ func TestIsElementInBF(t *testing.T) {
 }
 
 func TestIsElementInBF_NotPresent(t *testing.T) {
-	element := int(2)
+	element := 2
+
 	BF := bloom.NewWithEstimates(setSize, falsePositiveRate)
 	BF = addElementToBF(int(3), BF)
 	defer BF.ClearAll()
@@ -103,7 +105,8 @@ func TestIsElementInBF_NotPresent(t *testing.T) {
 }
 
 func TestIsElementInBF_EmptyBF(t *testing.T) {
-	element := int(1)
+	element := 1
+
 	BF := bloom.NewWithEstimates(setSize, falsePositiveRate)
 	defer BF.ClearAll()
 
@@ -156,8 +159,7 @@ func TestMergeElements_BothEmpty(t *testing.T) {
 }
 
 func TestMergeElements_Duplicate(t *testing.T) {
-	elements := []int{1, 2}
-	elementsToMerge := []int{1}
+	elements, elementsToMerge := []int{1, 2}, []int{1}
 	elementsMerged := []int{1, 2}
 
 	expectedSet := Set{List: elementsMerged}
