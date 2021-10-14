@@ -7,6 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// TestGetBFMissingElements tests the basic functionality
+// of GetBFMissingElements()
 func TestGetBFMissingElements(t *testing.T) {
 	list := []int{1}
 	set := set.Initialize()
@@ -20,6 +22,8 @@ func TestGetBFMissingElements(t *testing.T) {
 	assert.Equal(t, expectedElements, actualElements)
 }
 
+// TestGetBFMissingElements_EmptyBF tests the functionality of GetBFMissingElements()
+// When the Set's Bloom Filter is Empty
 func TestGetBFMissingElements_EmptyBF(t *testing.T) {
 	list := []int{1, 2, 3}
 	set := set.Initialize()
@@ -31,6 +35,8 @@ func TestGetBFMissingElements_EmptyBF(t *testing.T) {
 	assert.Equal(t, expectedElements, actualElements)
 }
 
+// TestGetBFMissingElements_EmptyList tests the functionality of GetBFMissingElements()
+// When the List is Empty
 func TestGetBFMissingElements_EmptyList(t *testing.T) {
 	list := []int{}
 	set := set.Initialize()
@@ -44,6 +50,8 @@ func TestGetBFMissingElements_EmptyList(t *testing.T) {
 	assert.Equal(t, expectedElements, actualElements)
 }
 
+// TestGetBFMissingElements_BothEmpty tests the functionality of GetBFMissingElements()
+// When both the Set's Bloom Filter & the List are Empty
 func TestGetBFMissingElements_BothEmpty(t *testing.T) {
 	list := []int{}
 	set := set.Initialize()
@@ -55,6 +63,8 @@ func TestGetBFMissingElements_BothEmpty(t *testing.T) {
 	assert.Equal(t, expectedElements, actualElements)
 }
 
+// TestUpdate tests the basic functionality
+// of Update()
 func TestUpdate(t *testing.T) {
 	baseSet := set.Initialize()
 	defer baseSet.Clear()
@@ -83,6 +93,8 @@ func TestUpdate(t *testing.T) {
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
 }
 
+// TestUpdate_BothEqual tests the functionality of Update()
+// When both Sets are equal
 func TestUpdate_BothEqual(t *testing.T) {
 	baseSet := set.Initialize()
 	defer baseSet.Clear()
@@ -111,6 +123,8 @@ func TestUpdate_BothEqual(t *testing.T) {
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
 }
 
+// TestUpdate_EmptySet tests the functionality of Update()
+// When the base Set is empty
 func TestUpdate_EmptySet(t *testing.T) {
 	baseSet := set.Initialize()
 	defer baseSet.Clear()
@@ -138,6 +152,8 @@ func TestUpdate_EmptySet(t *testing.T) {
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
 }
 
+// TestUpdate_EmptyPayload tests the functionality of Update()
+// When the payload Set is empty
 func TestUpdate_EmptyPayload(t *testing.T) {
 	baseSet := set.Initialize()
 	defer baseSet.Clear()
@@ -165,6 +181,8 @@ func TestUpdate_EmptyPayload(t *testing.T) {
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
 }
 
+// TestUpdate_BothEmpty tests the functionality of Update()
+// When both the base Set & payload Set are empty
 func TestUpdate_BothEmpty(t *testing.T) {
 	baseSet := set.Initialize()
 	defer baseSet.Clear()
@@ -188,6 +206,9 @@ func TestUpdate_BothEmpty(t *testing.T) {
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
 }
 
+// TestUpdate_FullSync tests the functionality of Update()
+// When the base Set in one node has elements & the Set in the other node is empty
+// and the sync is initiated from the node that has elements
 func TestUpdate_FullSync(t *testing.T) {
 	baseSet := set.Initialize()
 	defer baseSet.Clear()
@@ -224,6 +245,9 @@ func TestUpdate_FullSync(t *testing.T) {
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
 }
 
+// TestUpdate_FullSyncOtherNode tests the functionality of Update()
+// When the base Set in one node has elements & the Set in the other node is empty
+// and the sync is initiated from the node that is empty
 func TestUpdate_FullSyncOtherNode(t *testing.T) {
 	baseSet := set.Initialize()
 	defer baseSet.Clear()
@@ -274,6 +298,9 @@ func TestUpdate_FullSyncOtherNode(t *testing.T) {
 	assert.Equal(t, payloadSet, baseSet)
 }
 
+// TestUpdate_MixedSync tests the functionality of Update()
+// When the base Set in one node has elements
+// different from the Set in the other node
 func TestUpdate_MixedSync(t *testing.T) {
 	baseSet := set.Initialize()
 	defer baseSet.Clear()

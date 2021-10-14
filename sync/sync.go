@@ -8,9 +8,11 @@ import (
 	"github.com/el10savio/goSetReconciliation/set"
 )
 
-// Send ...
+// Send generates the sync payload and sends
+// it to all the peers in the cluster
 func Send(Set set.Set, missingElements []int) error {
-	// Send BF & Hash
+	// Send across missing elements (no elements in Phase 1)
+	// and the Set's Bloom Filer & Hash
 	payload := Payload{
 		MissingElements: missingElements,
 		BF:              Set.BF,
@@ -35,7 +37,8 @@ func Send(Set set.Set, missingElements []int) error {
 	return nil
 }
 
-// SendSyncRequest sends the HTTP Sync POST request to a given peer
+// SendSyncRequest sends the HTTP Sync Reconcile
+// POST request to a given peer
 func SendSyncRequest(peer string, payload Payload) (int, error) {
 	if peer == "" {
 		return 0, errors.New("empty peer provided")
