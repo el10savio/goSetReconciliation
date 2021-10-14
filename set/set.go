@@ -8,18 +8,26 @@ import (
 )
 
 const (
-	setSize           = 1000
+	// Bloom Filter set size
+	setSize = 1000
+
+	// Bloom Filter False Positive Rate
 	falsePositiveRate = 0.01
 )
 
-// Set ...
+// Set is used to define our list of unique numbers
+// We can only add elements to it & clear it for tests
+// Every time a new element is added the Bloom Filter
+// and corresponding Hash gets updated
 type Set struct {
-	List []int              `hash:"set"`
-	BF   *bloom.BloomFilter `hash:"ignore"`
-	Hash uint64             `hash:"ignore"`
+	List []int              `hash:"set"`    // Collection of unique integers
+	BF   *bloom.BloomFilter `hash:"ignore"` // State of elements of the list
+	Hash uint64             `hash:"ignore"` // Unique Hash for the list state
 }
 
-// Initialize ...
+// Initialize creates a new set
+// with an empty list, Bloom Filter
+// and a default Hash of 0
 func Initialize() Set {
 	return Set{
 		List: []int{},
@@ -28,12 +36,15 @@ func Initialize() Set {
 	}
 }
 
-// GetElements ...
+// GetElements returns the elements
+// present in the Set
 func (set *Set) GetElements() []int {
 	return set.List
 }
 
-// AddElements ...
+// AddElements inserts new elements to the list
+// only if it was  never present before &
+// updates the Bloom Filter & Hash
 func (set *Set) AddElements(elements []int) {
 	for _, element := range elements {
 		if !set.AddElementToBF(element) {
@@ -43,27 +54,33 @@ func (set *Set) AddElements(elements []int) {
 	}
 }
 
-// AddElementToBF ...
+// AddElementToBF updates the Bloom Filter with the
+// new element entry by converting it to it binary form
+// & then checking if it was present in the filter
+// before & adds it in if it is unique
 func (set *Set) AddElementToBF(element int) bool {
 	array := make([]byte, 4)
 	binary.BigEndian.PutUint32(array, uint32(element))
 	return set.BF.TestAndAdd(array)
 }
 
-// IsElementInBF ...
+// IsElementInBF checks if the given element
+// is present in the bloom filter
 func IsElementInBF(element int, BF *bloom.BloomFilter) bool {
 	array := make([]byte, 4)
 	binary.BigEndian.PutUint32(array, uint32(element))
 	return BF.Test(array)
 }
 
-// MergeElements ...
+// MergeElements takes a list of elements
+// to be added into the Set
 func MergeElements(set Set, elements []int) Set {
 	set.AddElements(elements)
 	return set
 }
 
-// Clear ...
+// Clear resets the set
+// & its parametes
 func (set *Set) Clear() {
 	set.List = []int{}
 	set.BF.ClearAll()
