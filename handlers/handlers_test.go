@@ -33,27 +33,23 @@ func TestGet(t *testing.T) {
 	defer testClearUtil(t)
 	testAddUtil(t, "[1]", http.StatusOK)
 	testGetUtil(t, "[1]\n", http.StatusOK)
-	testGetHashUtil(t, "4937410033792675729\n", http.StatusOK)
 }
 
 func TestGet_EmptyElement(t *testing.T) {
 	defer testClearUtil(t)
 	testGetUtil(t, "[]\n", http.StatusOK)
-	testGetHashUtil(t, "0\n", http.StatusOK)
 }
 
 func TestGet_DuplicateElement(t *testing.T) {
 	defer testClearUtil(t)
 	testAddUtil(t, "[1,1]", http.StatusOK)
 	testGetUtil(t, "[1]\n", http.StatusOK)
-	testGetHashUtil(t, "4937410033792675729\n", http.StatusOK)
 }
 
 func TestGet_MultipleElements(t *testing.T) {
 	defer testClearUtil(t)
 	testAddUtil(t, "[1,2,3]", http.StatusOK)
 	testGetUtil(t, "[1,2,3]\n", http.StatusOK)
-	testGetHashUtil(t, "8822251702295816746\n", http.StatusOK)
 }
 
 func testAddUtil(t *testing.T, elements string, expectedStatus int) {
@@ -83,20 +79,6 @@ func testGetUtil(t *testing.T, expectedList string, expectedStatus int) {
 
 	assert.Equal(t, expectedStatus, rr.Code)
 	assert.Equal(t, expectedList, rr.Body.String())
-}
-
-func testGetHashUtil(t *testing.T, expectedHash string, expectedStatus int) {
-	request, err := http.NewRequest("GET", "/set/debug/hash", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(GetHash)
-	handler.ServeHTTP(rr, request)
-
-	assert.Equal(t, expectedStatus, rr.Code)
-	assert.Equal(t, expectedHash, rr.Body.String())
 }
 
 func testClearUtil(t *testing.T) {

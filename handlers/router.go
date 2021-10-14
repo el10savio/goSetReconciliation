@@ -34,12 +34,10 @@ var Routes = []Route{
 	{"/set/list", "GET", List},
 	{"/set/add", "POST", Add},
 
-	{"/set/debug/clear", "GET", Clear},
-	{"/set/debug/hash", "GET", GetHash},
-	{"/set/debug/bloom", "GET", GetBloomFilter},
-
 	{"/set/sync", "GET", StartSync},
 	{"/set/sync/reconcile", "POST", Reconcile},
+
+	{"/set/debug/clear", "GET", Clear},
 }
 
 // Index is the handler for the path "/"
