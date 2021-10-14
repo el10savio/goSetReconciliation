@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	log "github.com/sirupsen/logrus"
@@ -27,6 +28,13 @@ func Reconcile(w http.ResponseWriter, r *http.Request) {
 
 	// Reconcile the given value to our stored Set
 	Set, missingElements = sync.Update(Set, payload)
+
+	if len(missingElements) > 0 {
+		fmt.Println("Phase 2", missingElements)
+		if err := sync.Send(Set, missingElements); err != nil {
+			log.WithFields(log.Fields{"error": err}).Error("Phase 2 error")
+		}
+	}
 
 	// DEBUG log in the case of success indicating
 	// the new Set and the value added

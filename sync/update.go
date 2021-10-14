@@ -1,8 +1,6 @@
 package sync
 
 import (
-	"fmt"
-
 	"github.com/bits-and-blooms/bloom/v3"
 	"github.com/el10savio/goSetReconciliation/set"
 )
@@ -15,13 +13,6 @@ func Update(Set set.Set, payload Payload) (set.Set, []int) {
 
 	missingElements := GetBFMissingElements(Set.GetElements(), payload.BF)
 	Set = set.MergeElements(Set, payload.MissingElements)
-
-	if len(missingElements) > 0 {
-		fmt.Println("Phase 2", missingElements)
-		if err := Send(Set, missingElements); err != nil {
-			fmt.Println("Phase 2 error:", err)
-		}
-	}
 
 	return Set, missingElements
 }

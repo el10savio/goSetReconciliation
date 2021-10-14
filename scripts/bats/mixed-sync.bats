@@ -13,15 +13,9 @@
 	response="$(curl -sS -X GET http://$node1/set/list)" && [ "$response" == "[1,2,6]" ]
 	response="$(curl -sS -X GET http://$node2/set/list)" && [ "$response" == "[1,2,3,4,5]" ]
 
-
 	response="$(curl -sS -i http://$node1/set/sync | awk ' /HTTP/ {print $2}')" && [ "$response" == "200" ]
 	response="$(curl -sS -i http://$node2/set/sync | awk ' /HTTP/ {print $2}')" && [ "$response" == "200" ]
 
-	response="$(curl -sS -X GET http://$node1/set/list)"
-	echo "node1" $response
-	response="$(curl -sS -X GET http://$node2/set/list)"
-	echo "node2" $response
-
-	response="$(curl -sS -i http://$node1/set/debug/clear | awk ' /HTTP/ {print $2}')" && [ "$response" == "200" ]
-	response="$(curl -sS -i http://$node1/set/debug/clear | awk ' /HTTP/ {print $2}')" && [ "$response" == "201" ]
+	response="$(curl -sS -X GET http://$node1/set/list)" && [ "$response" == "[1,2,6,3,4,5]" ]
+	response="$(curl -sS -X GET http://$node2/set/list)" && [ "$response" == "[1,2,3,4,5,6]" ]
 }
