@@ -11,7 +11,8 @@ import (
 )
 
 var (
-	// Set ...
+	// Set is the set data
+	// structure initialized
 	Set set.Set
 )
 

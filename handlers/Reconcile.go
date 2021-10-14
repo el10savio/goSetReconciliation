@@ -9,11 +9,12 @@ import (
 	"github.com/el10savio/goSetReconciliation/sync"
 )
 
-// Reconcile ...
+// Reconcile is the internal HTTP handler for a peer to
+// receive the sync update from peer Sets in the cluster
 func Reconcile(w http.ResponseWriter, r *http.Request) {
 	var payload sync.Payload
 
-	// Obtain the value & position from POST Request Body
+	// Obtain the payload from POST Request Body
 	decoder := json.NewDecoder(r.Body)
 	err := decoder.Decode(&payload)
 	if err != nil {
@@ -27,7 +28,9 @@ func Reconcile(w http.ResponseWriter, r *http.Request) {
 	// Reconcile the given value to our stored Set
 	Set, missingElements = sync.Update(Set, payload)
 
-	// TODO: Add explanation here for Phase 2
+	// Phase 2 corresponds with sending either the missing elements or the Bloom Filter
+	// from our Set to other peers as we have found there to be a mismatch
+	// between the parameters received and the new updated set
 	if len(missingElements) > 0 || Set.Hash != payload.Hash {
 		err := sync.Send(Set, missingElements)
 		if err != nil {
@@ -39,7 +42,7 @@ func Reconcile(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// DEBUG log in the case of success indicating
-	// the new Set and the value added
+	// the new Set and the values added
 	log.WithFields(log.Fields{
 		"set":              Set,
 		"missing elements": missingElements,

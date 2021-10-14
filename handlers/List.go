@@ -7,13 +7,14 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// List ...
+// List is the HTTP handler used to return
+// the elements present in the Set in the server
 func List(w http.ResponseWriter, r *http.Request) {
 	// Get the values from the Set
 	list := Set.GetElements()
 
 	// DEBUG log in the case of success
-	// indicating the new Set
+	// indicating the Set list
 	log.WithFields(log.Fields{
 		"list": list,
 	}).Debug("successful set list")

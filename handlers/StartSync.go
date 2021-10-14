@@ -8,9 +8,11 @@ import (
 	"github.com/el10savio/goSetReconciliation/sync"
 )
 
-// StartSync ...
+// StartSync is the HTTP handler used to initiate
+// the sync procedure between the Sets
+// in the cluster
 func StartSync(w http.ResponseWriter, r *http.Request) {
-	// Get the values from the Set
+	// Send our Set to peers
 	err := sync.Send(Set, []int{})
 	if err != nil {
 		log.WithFields(log.Fields{"error": err}).Error("failed to send sync start")
@@ -19,14 +21,11 @@ func StartSync(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// DEBUG log in the case of success
-	// indicating the new Set
 	log.WithFields(log.Fields{
 		"set": Set,
 	}).Debug("successful set sync")
 
-	// Return HTTP 200 OK in the case of success
+	// Return HTTP 200 OK
+	// in the case of success
 	w.WriteHeader(http.StatusOK)
-
-	// JSON encode response value
-	// json.NewEncoder(w).Encode(list)
 }
