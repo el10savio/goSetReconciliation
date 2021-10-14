@@ -84,12 +84,7 @@ func TestUpdate(t *testing.T) {
 	expectedMissingElements := []int{}
 	baseSet, actualMissingElements := Update(baseSet, payload)
 
-	expectedSet := set.Initialize()
-	defer expectedSet.Clear()
-
-	expectedSet.AddElements([]int{1, 2, 3})
-
-	assert.Equal(t, expectedSet, baseSet)
+	assert.Equal(t, payloadSet, baseSet)
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
 }
 
@@ -114,12 +109,7 @@ func TestUpdate_BothEqual(t *testing.T) {
 	expectedMissingElements := []int{}
 	baseSet, actualMissingElements := Update(baseSet, payload)
 
-	expectedSet := set.Initialize()
-	defer expectedSet.Clear()
-
-	expectedSet.AddElements([]int{1, 2, 3})
-
-	assert.Equal(t, expectedSet, baseSet)
+	assert.Equal(t, payloadSet, baseSet)
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
 }
 
@@ -143,12 +133,7 @@ func TestUpdate_EmptySet(t *testing.T) {
 	expectedMissingElements := []int{}
 	baseSet, actualMissingElements := Update(baseSet, payload)
 
-	expectedSet := set.Initialize()
-	defer expectedSet.Clear()
-
-	expectedSet.AddElements([]int{1, 2, 3})
-
-	assert.Equal(t, expectedSet, baseSet)
+	assert.Equal(t, payloadSet, baseSet)
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
 }
 
@@ -199,10 +184,7 @@ func TestUpdate_BothEmpty(t *testing.T) {
 	expectedMissingElements := []int{}
 	baseSet, actualMissingElements := Update(baseSet, payload)
 
-	expectedSet := set.Initialize()
-	defer expectedSet.Clear()
-
-	assert.Equal(t, expectedSet, baseSet)
+	assert.Equal(t, payloadSet, baseSet)
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
 }
 
@@ -235,13 +217,7 @@ func TestUpdate_FullSync(t *testing.T) {
 	expectedMissingElements := []int{}
 	payloadSet, actualMissingElements = Update(payloadSet, payload)
 
-	expectedSet := set.Initialize()
-	defer expectedSet.Clear()
-
-	expectedSet.AddElements([]int{1, 2})
-
-	assert.Equal(t, expectedSet, baseSet)
-	assert.Equal(t, baseSet, payloadSet)
+	assert.Equal(t, payloadSet, baseSet)
 	assert.Equal(t, expectedMissingElements, actualMissingElements)
 }
 
