@@ -31,9 +31,23 @@ type Set struct {
 func Initialize() Set {
 	return Set{
 		List: []int{},
-		BF:   bloom.NewWithEstimates(setSize, falsePositiveRate),
+		BF:   initBloomFilter(),
 		Hash: uint64(0),
 	}
+}
+
+// initBloomFilter is a utility function to return
+// an empty Bloom Filter with our specified defaults
+func initBloomFilter() *bloom.BloomFilter {
+	return bloom.NewWithEstimates(setSize, falsePositiveRate)
+}
+
+// addElementToBF is a utitily function to
+// add an element into the Bloom Filter
+func addElementToBF(element int, BF *bloom.BloomFilter) *bloom.BloomFilter {
+	array := make([]byte, 4)
+	binary.BigEndian.PutUint32(array, uint32(element))
+	return BF.Add(array)
 }
 
 // GetElements returns the elements
@@ -63,6 +77,14 @@ func (set *Set) AddElementToBF(element int) bool {
 	return set.BF.TestAndAdd(array)
 }
 
+// Clear resets the set
+// and its parametes
+func (set *Set) Clear() {
+	set.List = []int{}
+	set.BF.ClearAll()
+	set.Hash = uint64(0)
+}
+
 // IsElementInBF checks if the given element
 // is present in the bloom filter
 func IsElementInBF(element int, BF *bloom.BloomFilter) bool {
@@ -76,12 +98,4 @@ func IsElementInBF(element int, BF *bloom.BloomFilter) bool {
 // Set merged with the given elements
 func (set *Set) MergeElements(elements []int) {
 	set.AddElements(elements)
-}
-
-// Clear resets the set
-// and its parametes
-func (set *Set) Clear() {
-	set.List = []int{}
-	set.BF.ClearAll()
-	set.Hash = uint64(0)
 }

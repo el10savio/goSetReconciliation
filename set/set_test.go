@@ -1,10 +1,8 @@
 package set
 
 import (
-	"encoding/binary"
 	"testing"
 
-	"github.com/bits-and-blooms/bloom/v3"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -13,7 +11,7 @@ import (
 func TestInitialize(t *testing.T) {
 	expectedSet := Set{
 		List: []int{},
-		BF:   bloom.NewWithEstimates(setSize, falsePositiveRate),
+		BF:   initBloomFilter(),
 		Hash: uint64(0),
 	}
 	actualSet := Initialize()
@@ -27,7 +25,7 @@ func TestInitialize(t *testing.T) {
 func TestClear(t *testing.T) {
 	expectedSet := Set{
 		List: []int{},
-		BF:   bloom.NewWithEstimates(setSize, falsePositiveRate),
+		BF:   initBloomFilter(),
 		Hash: uint64(0),
 	}
 	actualSet := Initialize()
@@ -95,7 +93,7 @@ func TestGetElements_Empty(t *testing.T) {
 func TestIsElementInBF(t *testing.T) {
 	element := 1
 
-	BF := bloom.NewWithEstimates(setSize, falsePositiveRate)
+	BF := initBloomFilter()
 	BF = addElementToBF(element, BF)
 	defer BF.ClearAll()
 
@@ -110,7 +108,7 @@ func TestIsElementInBF(t *testing.T) {
 func TestIsElementInBF_NotPresent(t *testing.T) {
 	element := 2
 
-	BF := bloom.NewWithEstimates(setSize, falsePositiveRate)
+	BF := initBloomFilter()
 	BF = addElementToBF(int(3), BF)
 	defer BF.ClearAll()
 
@@ -125,7 +123,7 @@ func TestIsElementInBF_NotPresent(t *testing.T) {
 func TestIsElementInBF_EmptyBF(t *testing.T) {
 	element := 1
 
-	BF := bloom.NewWithEstimates(setSize, falsePositiveRate)
+	BF := initBloomFilter()
 	defer BF.ClearAll()
 
 	expectedCondition := false
@@ -196,12 +194,4 @@ func TestMergeElements_Duplicate(t *testing.T) {
 	actualSet.MergeElements(elementsToMerge)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
-}
-
-// addElementToBF is a utitily function to
-// add an element into the Bloom Filter
-func addElementToBF(element int, BF *bloom.BloomFilter) *bloom.BloomFilter {
-	array := make([]byte, 4)
-	binary.BigEndian.PutUint32(array, uint32(element))
-	return BF.Add(array)
 }
