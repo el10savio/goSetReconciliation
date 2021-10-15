@@ -15,7 +15,7 @@ func Update(Set set.Set, payload Payload) (set.Set, []int) {
 	}
 
 	missingElements := GetBFMissingElements(Set.GetElements(), payload.BF)
-	Set = set.MergeElements(Set, payload.MissingElements)
+	Set.MergeElements(payload.MissingElements)
 
 	return Set, missingElements
 }

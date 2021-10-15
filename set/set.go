@@ -74,9 +74,8 @@ func IsElementInBF(element int, BF *bloom.BloomFilter) bool {
 // MergeElements takes a list of elements
 // to be added into & a Set and returns the
 // Set merged with the given elements
-func MergeElements(set Set, elements []int) Set {
+func (set *Set) MergeElements(elements []int) {
 	set.AddElements(elements)
-	return set
 }
 
 // Clear resets the set

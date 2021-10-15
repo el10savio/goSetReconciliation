@@ -135,7 +135,7 @@ func TestIsElementInBF_EmptyBF(t *testing.T) {
 }
 
 // TestMergeElements checks the basic functionality
-// of MergeElements()
+// of Set MergeElements()
 func TestMergeElements(t *testing.T) {
 	elements, elementsToMerge := []int{1, 2}, []int{3, 4, 5}
 	elementsMerged := []int{1, 2, 3, 4, 5}
@@ -145,7 +145,7 @@ func TestMergeElements(t *testing.T) {
 	defer actualSet.Clear()
 
 	actualSet.AddElements(elements)
-	actualSet = MergeElements(actualSet, elementsToMerge)
+	actualSet.MergeElements(elementsToMerge)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
@@ -161,7 +161,7 @@ func TestMergeElements_Empty(t *testing.T) {
 	defer actualSet.Clear()
 
 	actualSet.AddElements(elements)
-	actualSet = MergeElements(actualSet, elementsToMerge)
+	actualSet.MergeElements(elementsToMerge)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
@@ -177,7 +177,7 @@ func TestMergeElements_BothEmpty(t *testing.T) {
 	defer actualSet.Clear()
 
 	actualSet.AddElements(elements)
-	actualSet = MergeElements(actualSet, elementsToMerge)
+	actualSet.MergeElements(elementsToMerge)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
@@ -193,7 +193,7 @@ func TestMergeElements_Duplicate(t *testing.T) {
 	defer actualSet.Clear()
 
 	actualSet.AddElements(elements)
-	actualSet = MergeElements(actualSet, elementsToMerge)
+	actualSet.MergeElements(elementsToMerge)
 
 	assert.Equal(t, expectedSet.List, actualSet.List)
 }
