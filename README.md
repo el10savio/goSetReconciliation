@@ -61,5 +61,4 @@ This uses BATS bash testing to run curl requests to each node and asserts the ou
 ## References
 
 - [ Low complexity set reconciliation using Bloom filters ](https://dl.acm.org/doi/10.1145/1998476.1998483) [Magnus Skjegstad and Torleiv Maseng]
-- [ Low Complexity Set Reconciliation Using Bloom Filters | Paper Review ](https://www.youtube.com/watch?v=xuddEiu-t-8) [ Heidi Howard
-]
+- [ Low Complexity Set Reconciliation Using Bloom Filters | Paper Review ](https://www.youtube.com/watch?v=xuddEiu-t-8) [Heidi Howard]
