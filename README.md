@@ -4,7 +4,7 @@ An implementation to sync distributed sets using bloom filters. Based on the pap
 
 ## Introduction
 
-Syncing multiple distributed sets over a distributed system and hard and tedious. To tackle this the paper aims at syncing multiple lists by sending across bloom filters to each node to then caluclate the elements missing between the sets. This idea makes syncing sets much easier and of lower complexity.
+Syncing multiple distributed sets over a distributed system and hard and tedious. To tackle this the paper aims at syncing multiple lists by sending across bloom filters to each node to then calculate the elements missing between the sets. This idea makes syncing sets much easier and of lower complexity.
 
 ## Steps
 
