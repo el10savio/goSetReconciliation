@@ -1,6 +1,6 @@
 # goSetReconciliation
 
-An implementation to sync distributed sets using bloom filters. Based on the paper "Low complexity set reconciliation using Bloom filters" by Magnus Skjegstad and Torleiv Maseng
+An implementation to sync distributed sets using bloom filters. Based on the paper "Low complexity set reconciliation using Bloom filters" by Magnus Skjegstad and Torleiv Maseng.
 
 ## Introduction
 
