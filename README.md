@@ -6,6 +6,16 @@ An implementation to sync distributed sets using bloom filters. Based on the pap
 
 Syncing multiple distributed sets over a distributed system and hard and tedious. To tackle this the paper aims at syncing multiple lists by sending across bloom filters to each node to then calculate the elements missing between the sets. This idea makes syncing sets much easier and of lower complexity.
 
+## Example
+
+```
+$ curl -i -X POST localhost:8000/set/add -d {"values": [1,2,6]}
+$ curl -i -X POST localhost:8001/set/add -d {"values": [1,2,3,4,5]}
+$ curl -i -X GET localhost:8000/set/sync
+$ curl -i -X GET localhost:8000/set/list > [1,2,6,3,4,5]
+$ curl -i -X GET localhost:8000/set/list > [1,2,3,4,5,6]
+```
+
 ## Steps
 
 To provision the cluster:
