@@ -9,11 +9,11 @@ Syncing multiple distributed sets over a distributed system and hard and tedious
 ## Example
 
 ```
-$ curl -i -X POST localhost:8000/set/add -d {"values": [1,2,6]}
-$ curl -i -X POST localhost:8001/set/add -d {"values": [1,2,3,4,5]}
-$ curl -i -X GET localhost:8000/set/sync
-$ curl -i -X GET localhost:8000/set/list => [1,2,6,3,4,5]
-$ curl -i -X GET localhost:8001/set/list => [1,2,3,4,5,6]
+$ curl -X POST localhost:8000/set/add -d {"values": [1,2,6]}
+$ curl -X POST localhost:8001/set/add -d {"values": [1,2,3,4,5]}
+$ curl -X GET localhost:8000/set/sync
+$ curl -X GET localhost:8000/set/list => [1,2,6,3,4,5]
+$ curl -X GET localhost:8001/set/list => [1,2,3,4,5,6]
 ```
 
 ## Steps
