@@ -40,7 +40,7 @@ $ curl -i -X GET localhost:<peer-port>/set/list
 $ curl -i -X GET localhost:<peer-port>/set/sync
 ```
 
-In the logs for each peer docker container, we can see the logs of the peer nodes getting in sync after each local operation.
+In the logs for each peer docker container, we can see the logs of the peer nodes getting in sync when issuing the `/sync` request.
 
 To tear down the cluster and remove the built docker images:
 
@@ -50,13 +50,37 @@ $ make clean
 
 This is not certain to clean up all the locally created docker images at times. You can do a docker rmi to delete them.
 
-To provision the cluster and run automated end to end tests:
+## Testing
+
+To provision the cluster and run automated end to end tests you can use `make e2e`. This uses BATS bash testing to run curl requests to each node and asserts the output received.
 
 ```
 $ make e2e
+Running E2E Testing On Set Cluster
+bash scripts/tests.sh
+Provisioning Cluster With 2 Nodes
+Error: No such network: set_network
+Cluster Sanity Tests
+1..6
+ok 1 Check Replicas Count
+ok 2 Check Replicas Are Avaialable
+ok 3 Writes Are Succesfull
+ok 4 Reads Are Succesfull
+ok 5 Writes Are Idempotent
+ok 6 Set Debug Clear
+Full Sync Tests
+1..2
+ok 1 Add Elements To One Node Only & Check For Successfull Sync
+ok 2 Set Debug Clear
+1..2
+ok 1 Add Elements To One Node Only & Check For Successfull Sync From Other Node
+ok 2 Set Debug Clear
+Mixed Sync Tests
+1..2
+ok 1 Add Different Elements To Nodes & Check For Successfull Sync
+ok 2 Set Debug Clear
+Tearing Down Cluster
 ```
-
-This uses BATS bash testing to run curl requests to each node and asserts the output received.
 
 ## References
 
