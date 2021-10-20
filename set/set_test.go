@@ -37,16 +37,7 @@ func TestClear(t *testing.T) {
 // TestAddElements checks the basic functionality
 // of Set AddElements()
 func TestAddElements(t *testing.T) {
-	testSuite := []struct {
-		name             string
-		elementsToAdd    []int
-		expectedElements []int
-	}{
-		{name: "BasicFuntionality", elementsToAdd: []int{1, 2, 3}, expectedElements: []int{1, 2, 3}},
-		{name: "Duplicate", elementsToAdd: []int{1, 1}, expectedElements: []int{1}},
-	}
-
-	for _, testCase := range testSuite {
+	for _, testCase := range testAddElementsTestSuite {
 		testCase := testCase
 		t.Run(testCase.name, func(t *testing.T) {
 			t.Parallel()
@@ -65,16 +56,7 @@ func TestAddElements(t *testing.T) {
 // TestGetElements checks the functionality
 // of Set GetElements()
 func TestGetElements(t *testing.T) {
-	testSuite := []struct {
-		name             string
-		inputElements    []int
-		expectedElements []int
-	}{
-		{name: "BasicFuntionality", inputElements: []int{1, 2, 3}, expectedElements: []int{1, 2, 3}},
-		{name: "Empty", inputElements: []int{}, expectedElements: []int{}},
-	}
-
-	for _, testCase := range testSuite {
+	for _, testCase := range testGetElementsTestSuite {
 		testCase := testCase
 		t.Run(testCase.name, func(t *testing.T) {
 			t.Parallel()
@@ -94,19 +76,7 @@ func TestGetElements(t *testing.T) {
 // TestIsElementInBF checks the functionality
 // of IsElementInBF()
 func TestIsElementInBF(t *testing.T) {
-	testSuite := []struct {
-		name              string
-		elementToCheck    int
-		elementsToBeAdded []int
-		expectedCondition bool
-	}{
-		{name: "BasicFuntionality", elementToCheck: 1, elementsToBeAdded: []int{1}, expectedCondition: true},
-		{name: "NotPresent", elementToCheck: 2, elementsToBeAdded: []int{1}, expectedCondition: false},
-		{name: "EmptyBloomFilter", elementToCheck: 1, elementsToBeAdded: []int{}, expectedCondition: false},
-		{name: "MultipleDuplicateElements", elementToCheck: 1, elementsToBeAdded: []int{1, 1, 2, 3}, expectedCondition: true},
-	}
-
-	for _, testCase := range testSuite {
+	for _, testCase := range testIsElementInBFTestSuite {
 		testCase := testCase
 		t.Run(testCase.name, func(t *testing.T) {
 			t.Parallel()
@@ -128,19 +98,7 @@ func TestIsElementInBF(t *testing.T) {
 // TestMergeElements checks the functionality
 // of Set MergeElements()
 func TestMergeElements(t *testing.T) {
-	testSuite := []struct {
-		name                   string
-		elementsBase           []int
-		elementsToMerge        []int
-		expectedElementsMerged []int
-	}{
-		{name: "BasicFuntionality", elementsBase: []int{1, 2}, elementsToMerge: []int{3, 4, 5}, expectedElementsMerged: []int{1, 2, 3, 4, 5}},
-		{name: "Empty", elementsBase: []int{1, 2}, elementsToMerge: []int{}, expectedElementsMerged: []int{1, 2}},
-		{name: "BothEmpty", elementsBase: []int{}, elementsToMerge: []int{}, expectedElementsMerged: []int{}},
-		{name: "Duplicate", elementsBase: []int{1, 2}, elementsToMerge: []int{1}, expectedElementsMerged: []int{1, 2}},
-	}
-
-	for _, testCase := range testSuite {
+	for _, testCase := range testMergeElementsTestSuite {
 		testCase := testCase
 		t.Run(testCase.name, func(t *testing.T) {
 			t.Parallel()
