@@ -44,9 +44,8 @@ func TestAddElements(t *testing.T) {
 			actualSet := Initialize()
 			defer actualSet.Clear()
 
-			actualSet.AddElements(testCase.elementsToAdd)
-
 			expectedSet := Set{List: testCase.expectedElements}
+			actualSet.AddElements(testCase.elementsToAdd)
 
 			assert.Equal(t, expectedSet.List, actualSet.List)
 		})
