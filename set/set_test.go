@@ -37,161 +37,122 @@ func TestClear(t *testing.T) {
 // TestAddElements checks the basic functionality
 // of Set AddElements()
 func TestAddElements(t *testing.T) {
-	elementsToAdd := []int{1}
+	testSuite := []struct {
+		name             string
+		elementsToAdd    []int
+		expectedElements []int
+	}{
+		{name: "BasicFuntionality", elementsToAdd: []int{1, 2, 3}, expectedElements: []int{1, 2, 3}},
+		{name: "Duplicate", elementsToAdd: []int{1, 1}, expectedElements: []int{1}},
+	}
 
-	expectedSet := Set{List: elementsToAdd}
-	actualSet := Initialize()
-	defer actualSet.Clear()
+	for _, testCase := range testSuite {
+		testCase := testCase
+		t.Run(testCase.name, func(t *testing.T) {
+			t.Parallel()
+			actualSet := Initialize()
+			defer actualSet.Clear()
 
-	actualSet.AddElements(elementsToAdd)
+			actualSet.AddElements(testCase.elementsToAdd)
 
-	assert.Equal(t, expectedSet.List, actualSet.List)
+			expectedSet := Set{List: testCase.expectedElements}
+
+			assert.Equal(t, expectedSet.List, actualSet.List)
+		})
+	}
 }
 
-// TestAddElements_Duplicate checks the functionality of AddElements()
-// When duplicate elements are provided to be added
-func TestAddElements_Duplicate(t *testing.T) {
-	elementsToAdd := []int{1, 1}
-
-	expectedSet := Set{List: []int{1}}
-	actualSet := Initialize()
-	defer actualSet.Clear()
-
-	actualSet.AddElements(elementsToAdd)
-
-	assert.Equal(t, expectedSet.List, actualSet.List)
-}
-
-// TestGetElements checks the basic functionality
+// TestGetElements checks the functionality
 // of Set GetElements()
 func TestGetElements(t *testing.T) {
-	set := Initialize()
-	defer set.Clear()
+	testSuite := []struct {
+		name             string
+		inputElements    []int
+		expectedElements []int
+	}{
+		{name: "BasicFuntionality", inputElements: []int{1, 2, 3}, expectedElements: []int{1, 2, 3}},
+		{name: "Empty", inputElements: []int{}, expectedElements: []int{}},
+	}
 
-	set.AddElements([]int{1, 2, 3})
+	for _, testCase := range testSuite {
+		testCase := testCase
+		t.Run(testCase.name, func(t *testing.T) {
+			t.Parallel()
+			set := Initialize()
+			defer set.Clear()
 
-	expectedElements := []int{1, 2, 3}
-	actualElements := set.GetElements()
+			set.AddElements(testCase.inputElements)
 
-	assert.Equal(t, expectedElements, actualElements)
+			expectedElements := testCase.expectedElements
+			actualElements := set.GetElements()
+
+			assert.Equal(t, expectedElements, actualElements)
+		})
+	}
 }
 
-// TestGetElements_Empty checks the functionality of GetElements()
-// When the Set contains no elements
-func TestGetElements_Empty(t *testing.T) {
-	set := Initialize()
-	defer set.Clear()
-
-	expectedElements := make([]int, 0)
-	actualElements := set.GetElements()
-
-	assert.Equal(t, expectedElements, actualElements)
-}
-
-// TestIsElementInBF checks the basic functionality
+// TestIsElementInBF checks the functionality
 // of IsElementInBF()
 func TestIsElementInBF(t *testing.T) {
-	element := 1
+	testSuite := []struct {
+		name              string
+		elementToCheck    int
+		elementsToBeAdded []int
+		expectedCondition bool
+	}{
+		{name: "BasicFuntionality", elementToCheck: 1, elementsToBeAdded: []int{1}, expectedCondition: true},
+		{name: "NotPresent", elementToCheck: 2, elementsToBeAdded: []int{1}, expectedCondition: false},
+		{name: "EmptyBloomFilter", elementToCheck: 1, elementsToBeAdded: []int{}, expectedCondition: false},
+		{name: "MultipleDuplicateElements", elementToCheck: 1, elementsToBeAdded: []int{1, 1, 2, 3}, expectedCondition: true},
+	}
 
-	BF := initBloomFilter()
-	BF = addElementToBF(element, BF)
-	defer BF.ClearAll()
+	for _, testCase := range testSuite {
+		testCase := testCase
+		t.Run(testCase.name, func(t *testing.T) {
+			t.Parallel()
+			BF := initBloomFilter()
+			defer BF.ClearAll()
 
-	expectedCondition := true
-	actualCondition := IsElementInBF(element, BF)
+			for _, element := range testCase.elementsToBeAdded {
+				BF = addElementToBF(element, BF)
+			}
 
-	assert.Equal(t, expectedCondition, actualCondition)
+			expectedCondition := testCase.expectedCondition
+			actualCondition := IsElementInBF(testCase.elementToCheck, BF)
+
+			assert.Equal(t, expectedCondition, actualCondition)
+		})
+	}
 }
 
-// TestIsElementInBF_NotPresent checks the functionality of IsElementInBF()
-// When the element is not present in the Bloom Filter
-func TestIsElementInBF_NotPresent(t *testing.T) {
-	element := 2
-
-	BF := initBloomFilter()
-	BF = addElementToBF(int(3), BF)
-	defer BF.ClearAll()
-
-	expectedCondition := false
-	actualCondition := IsElementInBF(element, BF)
-
-	assert.Equal(t, expectedCondition, actualCondition)
-}
-
-// TestIsElementInBF_EmptyBF checks the functionality of IsElementInBF()
-// When the Bloom Filter is empty
-func TestIsElementInBF_EmptyBF(t *testing.T) {
-	element := 1
-
-	BF := initBloomFilter()
-	defer BF.ClearAll()
-
-	expectedCondition := false
-	actualCondition := IsElementInBF(element, BF)
-
-	assert.Equal(t, expectedCondition, actualCondition)
-}
-
-// TestMergeElements checks the basic functionality
+// TestMergeElements checks the functionality
 // of Set MergeElements()
 func TestMergeElements(t *testing.T) {
-	elements, elementsToMerge := []int{1, 2}, []int{3, 4, 5}
-	elementsMerged := []int{1, 2, 3, 4, 5}
+	testSuite := []struct {
+		name                   string
+		elementsBase           []int
+		elementsToMerge        []int
+		expectedElementsMerged []int
+	}{
+		{name: "BasicFuntionality", elementsBase: []int{1, 2}, elementsToMerge: []int{3, 4, 5}, expectedElementsMerged: []int{1, 2, 3, 4, 5}},
+		{name: "Empty", elementsBase: []int{1, 2}, elementsToMerge: []int{}, expectedElementsMerged: []int{1, 2}},
+		{name: "BothEmpty", elementsBase: []int{}, elementsToMerge: []int{}, expectedElementsMerged: []int{}},
+		{name: "Duplicate", elementsBase: []int{1, 2}, elementsToMerge: []int{1}, expectedElementsMerged: []int{1, 2}},
+	}
 
-	expectedSet := Set{List: elementsMerged}
-	actualSet := Initialize()
-	defer actualSet.Clear()
+	for _, testCase := range testSuite {
+		testCase := testCase
+		t.Run(testCase.name, func(t *testing.T) {
+			t.Parallel()
+			set := Initialize()
+			defer set.Clear()
 
-	actualSet.AddElements(elements)
-	actualSet.MergeElements(elementsToMerge)
+			set.AddElements(testCase.elementsBase)
+			set.MergeElements(testCase.elementsToMerge)
 
-	assert.Equal(t, expectedSet.List, actualSet.List)
-}
+			expectedSet := Set{List: testCase.expectedElementsMerged}
 
-// TestMergeElements_Empty checks the functionality of MergeElements()
-// When the list to merge is empty
-func TestMergeElements_Empty(t *testing.T) {
-	elements, elementsToMerge := []int{1, 2}, []int{}
-	elementsMerged := []int{1, 2}
-
-	expectedSet := Set{List: elementsMerged}
-	actualSet := Initialize()
-	defer actualSet.Clear()
-
-	actualSet.AddElements(elements)
-	actualSet.MergeElements(elementsToMerge)
-
-	assert.Equal(t, expectedSet.List, actualSet.List)
-}
-
-// TestMergeElements_BothEmpty checks the functionality of MergeElements()
-// When both the list to merge & the base Set are empty
-func TestMergeElements_BothEmpty(t *testing.T) {
-	elements, elementsToMerge := []int{}, []int{}
-	elementsMerged := []int{}
-
-	expectedSet := Set{List: elementsMerged}
-	actualSet := Initialize()
-	defer actualSet.Clear()
-
-	actualSet.AddElements(elements)
-	actualSet.MergeElements(elementsToMerge)
-
-	assert.Equal(t, expectedSet.List, actualSet.List)
-}
-
-// TestMergeElements_Duplicate checks the functionality of MergeElements()
-// When both the list to merge contains elements same as the base Set
-func TestMergeElements_Duplicate(t *testing.T) {
-	elements, elementsToMerge := []int{1, 2}, []int{1}
-	elementsMerged := []int{1, 2}
-
-	expectedSet := Set{List: elementsMerged}
-	actualSet := Initialize()
-	defer actualSet.Clear()
-
-	actualSet.AddElements(elements)
-	actualSet.MergeElements(elementsToMerge)
-
-	assert.Equal(t, expectedSet.List, actualSet.List)
+			assert.Equal(t, expectedSet.List, set.List)
+		})
+	}
 }
