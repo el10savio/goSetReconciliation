@@ -34,7 +34,7 @@ func TestClear(t *testing.T) {
 	assert.Equal(t, expectedSet, actualSet)
 }
 
-// TestAddElements checks the basic functionality
+// TestAddElements checks the functionality
 // of Set AddElements()
 func TestAddElements(t *testing.T) {
 	for _, testCase := range testAddElementsTestSuite {
