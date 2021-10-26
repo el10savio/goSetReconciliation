@@ -89,6 +89,10 @@ Mixed Sync Tests
 1..2
 ok 1 Add Different Elements To Nodes & Check For Successfull Sync
 ok 2 Set Debug Clear
+Resync Tests
+1..2
+ok 1 Sync Then Add Elements Again & Check For Successfull Resync
+ok 2 Set Debug Clear
 Tearing Down Cluster
 ```
 
