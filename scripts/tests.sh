@@ -14,5 +14,8 @@ bats --tap ${scripts_dir}/bats/full-sync-other-node.bats
 echo "Mixed Sync Tests"
 bats --tap ${scripts_dir}/bats/mixed-sync.bats
 
+echo "Resync Tests"
+bats --tap ${scripts_dir}/bats/resync.bats
+
 echo "Tearing Down Cluster"
 bash ${scripts_dir}/teardown.sh > /dev/null
