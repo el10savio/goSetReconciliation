@@ -11,7 +11,7 @@ declare -a peer_id_list=()
 network="set_network"
 
 # number of peers to be provisioned
-# Default 3 peers are provisioned
+# Default 2 peers are provisioned
 peers_count=$1
 
 # Err check number of peers
