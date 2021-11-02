@@ -5,7 +5,7 @@
   [ "$count" -eq 2 ]
 }
 
-@test "Check Replicas Are Avaialable" {
+@test "Check Replicas Are Available" {
   ports="$(docker ps | awk '/set/ {print $1}' | xargs -I {} docker port {} 8080 | sed ':a;N;$!ba;s/\n/,/g' | sort)"
 	IFS=', ' read -r -a ports_list <<< "$ports"
 
@@ -15,7 +15,7 @@
 	done 
 }
 
-@test "Writes Are Succesfull" {
+@test "Writes Are Successful" {
   ports="$(docker ps | awk '/set/ {print $1}' | xargs -I {} docker port {} 8080 | sed ':a;N;$!ba;s/\n/,/g' | sort)"
 	IFS=', ' read -r -a ports_list <<< "$ports"
 
@@ -24,7 +24,7 @@
 	done 
 }
 
-@test "Reads Are Succesfull" {
+@test "Reads Are Successful" {
   ports="$(docker ps | awk '/set/ {print $1}' | xargs -I {} docker port {} 8080 | sed ':a;N;$!ba;s/\n/,/g' | sort)"
 	IFS=', ' read -r -a ports_list <<< "$ports"
 

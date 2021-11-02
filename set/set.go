@@ -78,7 +78,7 @@ func (set *Set) AddElementToBF(element int) bool {
 }
 
 // Clear resets the set
-// and its parametes
+// and its parameters
 func (set *Set) Clear() {
 	set.List = []int{}
 	set.BF.ClearAll()

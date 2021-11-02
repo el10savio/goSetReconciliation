@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-@test "Add Elements To One Node Only & Check For Successfull Sync From Other Node" {
+@test "Add Elements To One Node Only & Check For Successful Sync From Other Node" {
   ports="$(docker ps | awk '/set/ {print $1}' | xargs -I {} docker port {} 8080 | sed ':a;N;$!ba;s/\n/,/g' | sort)"
 	IFS=', ' read -r -a ports_list <<< "$ports"
 
