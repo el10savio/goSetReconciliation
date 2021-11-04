@@ -40,6 +40,14 @@ lint:
 	@echo "go lint SetReconciliation Server"	
 	golint ./...
 
+golanglintci:
+	@echo "golanglintci SetReconciliation Server"	
+	docker run --rm -v $(shell pwd):/app -w /app golangci/golangci-lint:v1.42.1 golangci-lint run --out-format tab --enable-all
+
+semgrep:
+	@echo "semgrep SetReconciliation Server"	
+	docker run --rm -v "$(shell pwd):/src" returntocorp/semgrep --config=auto
+
 lint-dockerfile:
 	@echo "lint SetReconciliation Dockerfile"	
 	docker run --rm -i hadolint/hadolint < Dockerfile
@@ -51,3 +59,11 @@ test:
 shellcheck:
 	@echo "shellcheck SetReconciliation Scripts"
 	shellcheck scripts/*.sh
+
+shfmt:
+	@echo "shfmt SetReconciliation Scripts"
+	shfmt -i 2 -ci -w -l -bn scripts/*.sh
+
+codespell:
+	@echo "checking SetReconciliation spellings"
+	codespell

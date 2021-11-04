@@ -2,7 +2,7 @@
 
 echo "Provisioning Cluster With 2 Nodes"
 scripts_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-bash ${scripts_dir}/provision.sh 2 > /dev/null
+bash ${scripts_dir}/provision.sh 2 >/dev/null
 
 echo "Cluster Sanity Tests"
 bats --tap ${scripts_dir}/bats/cluster-sanity.bats
@@ -18,4 +18,4 @@ echo "Resync Tests"
 bats --tap ${scripts_dir}/bats/resync.bats
 
 echo "Tearing Down Cluster"
-bash ${scripts_dir}/teardown.sh > /dev/null
+bash ${scripts_dir}/teardown.sh >/dev/null
